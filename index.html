@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamondbacks Prop Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   D-Backs Prop Lab — editorial sports-almanac aesthetic
+   Palette: Sedona red, desert sand, deep ink, Sonoran teal accent
+   ========================================================================== */
+
+:root {
+  --ink:        #14110f;
+  --ink-soft:   #2a2422;
+  --paper:      #f4ede1;
+  --paper-deep: #ebe1cf;
+  --rule:       #1a1715;
+  --rule-soft:  #c9bda5;
+
+  --sedona:     #a71930;   /* D-Backs primary red */
+  --sedona-deep:#7a0f1f;
+  --copper:     #c8842b;
+  --turquoise:  #1d5e6b;
+  --sage:       #6b7c5d;
+
+  --p-strong:   #1d5e6b;
+  --p-mid:      #c8842b;
+  --p-weak:     #8a7d6b;
+
+  --shadow-1:   0 1px 0 rgba(0,0,0,0.04);
+  --shadow-2:   0 18px 40px -22px rgba(20,17,15,0.35);
+
+  --ff-display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono:    'JetBrains Mono', 'SF Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'tnum' 1, 'cv11' 1;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(167,25,48,0.04), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(29,94,107,0.03), transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.012) 0,
+      rgba(0,0,0,0.012) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  min-height: 100vh;
+}
+
+a { color: var(--sedona); text-decoration: none; border-bottom: 1px solid rgba(167,25,48,0.3); }
+a:hover { border-bottom-color: var(--sedona); }
+
+/* ============================================================ MASTHEAD */
+.masthead {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 4px double var(--sedona);
+}
+.masthead-inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 22px 32px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.logo-block { display: flex; align-items: center; gap: 18px; }
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  background: var(--sedona);
+  color: var(--paper);
+  font-family: var(--ff-display);
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--paper);
+  box-shadow: 4px 4px 0 var(--sedona-deep);
+  font-style: italic;
+}
+.logo-text h1 {
+  font-family: var(--ff-display);
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-style: italic;
+}
+.subtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rule-soft);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.masthead-meta { display: flex; align-items: center; gap: 18px; }
+.meta-item { display: flex; flex-direction: column; align-items: flex-end; }
+.meta-label {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--rule-soft);
+}
+.meta-value { font-family: var(--ff-mono); font-size: 13px; font-weight: 500; }
+.refresh-btn {
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  color: var(--paper);
+  padding: 8px 14px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.refresh-btn:hover { background: var(--sedona); border-color: var(--sedona); }
+
+/* ============================================================ GAME STRIP */
+.game-strip {
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 18px 32px;
+}
+.game-card {
+  max-width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.game-side { display: flex; flex-direction: column; padding: 0 22px; min-width: 0; flex: 1; }
+.game-side:first-child { padding-left: 0; }
+.game-tag {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--ink-soft); font-weight: 600; margin-bottom: 4px;
+}
+.game-team {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.game-venue { font-style: italic; }
+.game-weather { font-family: var(--ff-mono); font-size: 13px; font-weight: 400; letter-spacing: 0; }
+.game-divider {
+  width: 1px;
+  background: var(--rule-soft);
+  margin: 4px 0;
+}
+.game-loading, .game-none {
+  max-width: 1480px; margin: 0 auto;
+  font-family: var(--ff-display); font-style: italic; color: var(--ink-soft);
+}
+.game-none small { display: block; font-family: var(--ff-body); font-style: normal; font-size: 11px; margin-top: 2px; color: var(--ink-soft); }
+
+/* ============================================================ DISCLAIMER */
+.disclaimer-bar {
+  background: var(--ink);
+  color: var(--rule-soft);
+  font-size: 12px;
+  padding: 10px 32px;
+  text-align: center;
+  font-family: var(--ff-body);
+}
+.disclaimer-bar strong { color: var(--copper); font-weight: 600; }
+.disclaimer-bar a { color: var(--paper); border-bottom-color: var(--rule-soft); }
+
+/* ============================================================ MAIN */
+.content {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 32px;
+}
+.content-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px;
+}
+.content-header h2 {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 36px;
+  letter-spacing: -0.025em;
+  font-style: italic;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--ink-soft); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-strong { background: var(--p-strong); }
+.dot-mid    { background: var(--p-mid); }
+.dot-weak   { background: var(--p-weak); }
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 18px;
+}
+
+.loading-pulse, .empty, .error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+.loading-pulse { animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.error { color: var(--sedona); }
+
+/* ============================================================ PLAYER CARD */
+.player-card {
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  border-top: 3px solid var(--ink);
+  padding: 20px;
+  position: relative;
+  animation: cardIn 0.5s ease-out backwards;
+  box-shadow: var(--shadow-1);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.player-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  border-bottom: 1px dotted var(--rule-soft); padding-bottom: 12px; margin-bottom: 14px;
+  gap: 12px;
+}
+.card-name { display: flex; align-items: baseline; gap: 8px; }
+.card-num {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--copper);
+  font-weight: 700;
+}
+.card-name h3 {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-style: italic;
+}
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.tag {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule-soft);
+  padding: 3px 7px;
+  color: var(--ink-soft);
+}
+.tag-hand { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tag-vs { background: var(--sedona); color: var(--paper); border-color: var(--sedona); }
+
+/* hero probability blocks */
+.hero-prob {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.prob-block {
+  text-align: center;
+  padding: 12px 4px 10px;
+  background: var(--paper-deep);
+  border-bottom: 3px solid var(--p-weak);
+}
+.prob-block.p-strong { border-bottom-color: var(--p-strong); background: rgba(29,94,107,0.06); }
+.prob-block.p-mid    { border-bottom-color: var(--p-mid); background: rgba(200,132,43,0.07); }
+.prob-block.p-weak   { border-bottom-color: var(--p-weak); }
+.prob-value {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-feature-settings: 'tnum' 1;
+}
+.prob-block.p-strong .prob-value { color: var(--p-strong); }
+.prob-block.p-mid    .prob-value { color: var(--p-mid); }
+.prob-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ink-soft); margin-top: 4px; font-weight: 600;
+}
+
+/* expected value strip */
+.exp-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--rule-soft);
+  margin-bottom: 12px;
+}
+.exp {
+  padding: 8px 4px;
+  text-align: center;
+  border-right: 1px solid var(--rule-soft);
+}
+.exp:last-child { border-right: none; }
+.exp span {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-soft); display: block; font-weight: 600;
+}
+.exp b { font-family: var(--ff-mono); font-size: 14px; font-weight: 600; }
+
+/* O/U table */
+.ou-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+.ou-table th, .ou-table td {
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 6px 8px;
+  text-align: center;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+}
+.ou-table th {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  background: var(--paper-deep);
+}
+.ou-table td:first-child {
+  text-align: left;
+  font-family: var(--ff-body);
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ou-table td.p-strong { color: var(--p-strong); font-weight: 700; }
+.ou-table td.p-mid    { color: var(--p-mid); font-weight: 600; }
+
+/* season + splits strips */
+.stats-strip, .splits-strip {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--rule-soft);
+  margin-bottom: 8px;
+}
+.stats-strip { grid-template-columns: repeat(6, 1fr); }
+.stats-strip > div {
+  padding: 6px 2px;
+  text-align: center;
+  border-right: 1px solid var(--rule-soft);
+}
+.stats-strip > div:last-child { border-right: none; }
+.stats-strip span {
+  font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-soft); display: block; font-weight: 700;
+}
+.stats-strip b { font-family: var(--ff-mono); font-size: 12px; font-weight: 600; }
+
+.splits-strip { grid-template-columns: 1fr 1fr; }
+.split-block {
+  padding: 8px 10px;
+  border-right: 1px solid var(--rule-soft);
+}
+.split-block:last-child { border-right: none; }
+.split-label {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-soft); display: block; font-weight: 700; margin-bottom: 2px;
+}
+.split-line { font-family: var(--ff-mono); font-size: 11px; font-weight: 500; }
+.split-line em { color: var(--ink-soft); font-style: italic; font-size: 10px; }
+
+.diag-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  padding: 8px;
+  font-family: var(--ff-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.15s;
+}
+.diag-btn:hover { background: var(--ink); color: var(--paper); }
+
+/* skip / error cards */
+.player-card-skip { border-top-color: var(--rule-soft); opacity: 0.7; }
+.card-skip h3, .card-error h3 { font-family: var(--ff-display); font-style: italic; font-size: 18px; margin-bottom: 6px; }
+.card-skip .pos, .card-error .pos { font-size: 10px; color: var(--ink-soft); font-style: normal; font-family: var(--ff-mono); }
+.card-skip p, .card-error p { font-size: 12px; color: var(--ink-soft); }
+
+/* ============================================================ MODAL */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(20,17,15,0.65);
+  display: grid; place-items: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal {
+  background: var(--paper);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+  border: 3px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--sedona);
+}
+.modal-close {
+  position: absolute;
+  top: 12px; right: 16px;
+  background: transparent; border: none;
+  font-size: 32px; line-height: 1;
+  cursor: pointer; color: var(--ink);
+}
+.modal h2 { font-family: var(--ff-display); font-style: italic; font-size: 28px; letter-spacing: -0.02em; }
+.modal-pos { font-family: var(--ff-mono); font-size: 12px; font-style: normal; color: var(--ink-soft); }
+.modal-sub { color: var(--ink-soft); font-size: 12px; margin-bottom: 20px; }
+.modal h3 {
+  font-family: var(--ff-body); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin: 20px 0 8px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--sedona);
+}
+.modal-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.modal-table tr { border-bottom: 1px dotted var(--rule-soft); }
+.modal-table tr:last-child { border-bottom: none; }
+.modal-table td { padding: 6px 0; font-family: var(--ff-mono); }
+.modal-table td:first-child { font-family: var(--ff-body); color: var(--ink-soft); width: 60%; }
+.modal-table .row-result { background: var(--paper-deep); }
+.modal-table .row-result td { padding: 8px 6px; }
+
+/* ============================================================ FOOTER */
+.footer {
+  border-top: 1px solid var(--rule-soft);
+  padding: 24px 32px 40px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+  max-width: 1480px;
+  margin: 24px auto 0;
+}
+.footer code { font-family: var(--ff-mono); background: var(--paper-deep); padding: 1px 4px; }
+
+/* ============================================================ RESPONSIVE */
+@media (max-width: 720px) {
+  .masthead-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .game-card { flex-direction: column; gap: 8px; }
+  .game-divider { display: none; }
+  .game-side { padding: 0; }
+  .content { padding: 18px; }
+  .content-header h2 { font-size: 26px; }
+  .players-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================ ODDS META BAR */
+.odds-meta-bar {
+  padding: 9px 32px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--ff-body);
+}
+.odds-meta-bar.status-ok   { background: rgba(29,94,107,0.10);  color: var(--ink); }
+.odds-meta-bar.status-warn { background: rgba(200,132,43,0.14); color: var(--ink); }
+.odds-meta-bar.status-err  { background: rgba(167,25,48,0.10);  color: var(--ink); }
+.odds-meta-bar code { font-family: var(--ff-mono); background: var(--paper); padding: 1px 5px; font-size: 11px; }
+.om-tag {
+  font-family: var(--ff-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; padding: 2px 8px;
+  background: var(--ink); color: var(--paper);
+  text-transform: uppercase;
+}
+.om-credits {
+  margin-left: auto; font-family: var(--ff-mono); font-size: 11px;
+  color: var(--ink-soft); font-weight: 500;
+}
+.om-burn {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--ink-soft); font-weight: 500;
+  padding-left: 12px; border-left: 1px solid rgba(0,0,0,0.12);
+  margin-left: 8px;
+}
+
+/* ============================================================ EDGES BLOCK */
+.edges-block {
+  margin-bottom: 12px;
+  border: 1px solid var(--ink);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+  overflow-x: auto;          /* graceful fallback if a row is still too wide */
+}
+.edges-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 7px 10px;
+  background: var(--ink); color: var(--paper);
+}
+.edges-title {
+  font-family: var(--ff-display); font-style: italic; font-weight: 700;
+  font-size: 13px; letter-spacing: -0.01em;
+}
+.edges-sub {
+  font-family: var(--ff-mono); font-size: 9px; letter-spacing: 0.05em;
+  color: var(--rule-soft); text-transform: uppercase;
+}
+.edges-table {
+  width: 100%; border-collapse: collapse; font-size: 10.5px; table-layout: auto;
+}
+.edges-table th {
+  font-family: var(--ff-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--ink-soft); padding: 4px 4px; text-align: left;
+  border-bottom: 1px solid var(--rule-soft);
+  white-space: nowrap;
+}
+.edges-table td {
+  padding: 4px 4px; border-bottom: 1px dotted var(--rule-soft);
+  font-family: var(--ff-mono); font-weight: 500;
+  white-space: nowrap;
+}
+.edges-table tr:last-child td { border-bottom: none; }
+.edges-table tr.edge-strong { background: rgba(29,94,107,0.10); }
+.edges-table tr.edge-strong .ed-edge b { color: var(--p-strong); }
+.edges-table tr.edge-mid    { background: rgba(29,94,107,0.04); }
+.edges-table tr.edge-mid    .ed-edge b { color: var(--p-strong); }
+.edges-table tr.edge-weak   .ed-edge b { color: var(--copper); }
+.edges-table tr.edge-neg    .ed-edge b { color: var(--ink-soft); }
+.edges-table tr.edge-neg td { color: var(--ink-soft); opacity: 0.75; }
+.ed-mkt { font-family: var(--ff-body); font-size: 11px; font-weight: 500; }
+.ed-book { width: 1%; }
+.book-pill {
+  font-family: var(--ff-mono); font-size: 9px; font-weight: 700;
+  padding: 2px 6px; letter-spacing: 0.05em; color: var(--paper);
+  background: var(--ink-soft);
+}
+.book-pill.book-draftkings { background: #16a34a; }    /* DK green */
+.book-pill.book-fanduel    { background: #1d4e89; }    /* FD blue */
+.ed-price { text-align: right; }
+.ed-mp, .ed-fp { text-align: right; color: var(--ink-soft); }
+.ed-edge { text-align: right; }
+.ed-kelly { text-align: right; color: var(--ink-soft); font-size: 10px; }
+.ed-conf  { text-align: right; font-family: var(--ff-mono); font-size: 10.5px; font-weight: 600; }
+.ed-conf.conf-strong { color: #15803d; }
+.ed-conf.conf-mid    { color: #b45309; }
+.ed-conf.conf-weak   { color: #b53a30; }
+.ed-stake { text-align: right; font-weight: 600; padding-right: 8px !important; }
+
+.modal-backdrop[hidden] { display: none !important; }
+
+/* ============================================================ TOP PICKS */
+.top-picks {
+  margin: 0 0 18px;
+  border: 2px solid var(--ink);
+  background: linear-gradient(180deg, #fef9e8 0%, #fdf3d3 100%);  /* warm gold */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.top-picks[hidden] { display: none; }
+.tp-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 14px;
+  background: var(--ink); color: var(--paper);
+}
+.tp-title {
+  font-family: var(--ff-display); font-style: italic; font-weight: 800;
+  font-size: 16px; letter-spacing: -0.01em;
+}
+.tp-sub {
+  font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--rule-soft); text-transform: uppercase;
+}
+.tp-grid { padding: 6px 0; }
+.tp-row {
+  display: grid;
+  grid-template-columns: 28px 1.4fr 1.6fr 50px 60px 70px 55px 70px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px dotted rgba(0,0,0,0.10);
+  font-family: var(--ff-mono); font-size: 13px;
+}
+.tp-row:last-child { border-bottom: none; }
+.tp-num {
+  font-weight: 900; font-size: 18px; color: var(--ink);
+  font-family: var(--ff-display);
+}
+.tp-player { font-family: var(--ff-body); font-weight: 700; font-size: 14px; }
+.tp-bet { color: var(--ink-soft); }
+.tp-book { text-align: center; }
+.tp-price { text-align: right; font-weight: 600; }
+.tp-edge { text-align: right; font-weight: 700; color: var(--p-strong); }
+.tp-conf { text-align: right; color: #15803d; font-weight: 600; }
+.tp-stake { text-align: right; font-weight: 800; font-size: 14px; color: var(--ink); }
+
+@media (max-width: 720px) {
+  .tp-row {
+    grid-template-columns: 24px 1fr 90px 80px;
+    grid-template-rows: auto auto;
+    row-gap: 4px;
+  }
+  .tp-num   { grid-row: 1 / 3; }
+  .tp-player { grid-column: 2 / 3; }
+  .tp-bet    { grid-column: 2 / 5; grid-row: 2; font-size: 12px; }
+  .tp-book   { grid-column: 3 / 4; grid-row: 1; }
+  .tp-price  { display: none; }
+  .tp-edge   { grid-column: 4 / 5; grid-row: 1; }
+  .tp-conf   { display: none; }
+  .tp-stake  { grid-column: 4 / 5; grid-row: 2; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="logo-block">
+      <div class="logo-mark">AZ</div>
+      <div class="logo-text">
+        <h1>The Prop Lab</h1>
+        <p class="subtitle">Diamondbacks Hitter Probabilities · Stats-Driven · No Lines</p>
+      </div>
+    </div>
+    <div class="masthead-meta">
+      <div class="meta-item">
+        <span class="meta-label">Generated</span>
+        <span class="meta-value" id="generated-at">—</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Build</span>
+        <span class="meta-value" id="build-time">—</span>
+      </div>
+      
+    </div>
+  </div>
+</header>
+<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 17:02 UTC · refreshed twice daily</div>
+
+<section class="game-strip" id="game-strip">
+  <div class="game-loading">Loading today's game…</div>
+</section>
+
+<section class="odds-meta-bar" id="odds-meta-bar" hidden></section>
+
+<main class="content">
+  <div class="content-header">
+    <h2>Lines &amp; Edges</h2>
+    <div class="legend">
+      <span class="legend-item">⅛-Kelly</span>
+      <span class="legend-item">de-vigged when both sides priced</span>
+      <span class="legend-item">Conf = P(edge&gt;0 | Monte Carlo)</span>
+      <span class="legend-item">stake assumes $100 bankroll</span>
+    </div>
+  </div>
+
+  <section id="top-picks" class="top-picks" hidden></section>
+
+  <div id="players-grid" class="players-grid">
+    <div class="loading-pulse">Loading hitter models…</div>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>Data: MLB Stats API (free, public). Park factors: hardcoded annual averages — update before each season. Weather: OpenWeatherMap (optional). Umpire data: user-supplied JSON. Model assumptions documented in <code>model.py</code>.</p>
+</footer>
+
+<!-- Detail modal -->
+<div id="modal-backdrop" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================================
+// UI flags injected from config.py (Python). Single source of truth.
+// ============================================================================
+const COMPACT_MODE = true;
+const BANKROLL_USD = 100.0;
+
+const fmt = {
+  pct: (v) => v == null ? '—' : (v * 100).toFixed(1) + '%',
+  num: (v, d = 2) => v == null ? '—' : Number(v).toFixed(d),
+  avg: (v) => v == null ? '—' : (typeof v === 'string' ? v : v.toFixed(3)).replace(/^0\./, '.'),
+  int: (v) => v == null ? '—' : v,
+};
+
+function fmtAmerican(price) {
+  if (price == null) return '—';
+  return price > 0 ? '+' + price : String(price);
+}
+function fmtEdge(edge) {
+  if (edge == null) return '—';
+  const sign = edge > 0 ? '+' : '';
+  return sign + (edge * 100).toFixed(1) + '%';
+}
+function bookLabel(b) { return b === 'draftkings' ? 'DK' : b === 'fanduel' ? 'FD' : (b || '').slice(0,2).toUpperCase(); }
+function marketLabel(m) {
+  return ({
+    batter_hits: 'Hits',
+    batter_total_bases: 'Total Bases',
+    batter_home_runs: 'Home Run',
+    batter_strikeouts: 'Strikeouts',
+    batter_runs_scored: 'Runs Scored',
+    batter_walks: 'Walks',
+    batter_hits_runs_rbis: 'H+R+RBI',
+  })[m] || m;
+}
+function edgeClass(edge) {
+  if (edge == null) return '';
+  if (edge >= 0.05) return 'edge-strong';
+  if (edge >= 0.02) return 'edge-mid';
+  if (edge > 0)     return 'edge-weak';
+  return 'edge-neg';
+}
+
+function probClass(p) {
+  if (p == null) return '';
+  if (p >= 0.70) return 'p-strong';
+  if (p >= 0.50) return 'p-mid';
+  return 'p-weak';
+}
+
+
+const STATIC_DATA = {"build_seconds": 3.63, "game": {"game_date": "2026-05-09T23:15:00Z", "game_pk": 825089, "home_plate_umpire": null, "is_home": true, "opponent_bullpen_stats": {"airOuts": 149, "atBats": 585, "avg": ".248", "balks": 0, "balls": 864, "baseOnBalls": 54, "battersFaced": 650, "blownSaves": 5, "catchersInterference": 0, "caughtStealing": 5, "caughtStealingPercentage": ".455", "completeGames": 0, "doubles": 29, "earnedRuns": 67, "era": "3.93", "gamesFinished": 38, "gamesPitched": 38, "gamesPlayed": 38, "gamesStarted": 0, "groundIntoDoublePlay": 10, "groundOuts": 134, "groundOutsToAirouts": "0.90", "hitBatsmen": 4, "hitByPitch": 4, "hits": 145, "hitsPer9Inn": "8.51", "holds": 14, "homeRuns": 17, "homeRunsPer9": "1.00", "inheritedRunners": 53, "inheritedRunnersScored": 20, "inningsPitched": "153.1", "intentionalWalks": 4, "losses": 8, "numberOfPitches": 2504, "obp": ".314", "ops": ".716", "outs": 460, "outsPitched": 460, "pitchesPerInning": "16.33", "rbi": 85, "runs": 74, "runsScoredPer9": "4.34", "sacBunts": 4, "sacFlies": 3, "saveOpportunities": 11, "saves": 6, "shutouts": 0, "slg": ".402", "stolenBasePercentage": ".545", "stolenBases": 6, "strikeOuts": 164, "strikePercentage": ".650", "strikeoutWalkRatio": "3.04", "strikeoutsPer9Inn": "9.63", "strikes": 1640, "totalBases": 235, "triples": 5, "walksPer9Inn": "3.17", "whip": "1.30", "wildPitches": 4, "winPercentage": ".500", "wins": 8}, "opponent_bullpen_usage": {"available_count": 5, "depleted_factor": 1.2, "pitchers": [{"available_score": 1.0, "days_rest": 2, "id": 681810, "last_date": "2026-05-07", "last_ip": 1.1, "last_was_start": false, "name": "Austin Warren", "season_stats": {"age": 30, "airOuts": 6, "atBats": 27, "avg": ".185", "balks": 0, "baseOnBalls": 3, "battersFaced": 30, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "completeGames": 0, "doubles": 2, "earnedRuns": 1, "era": "1.17", "gamesFinished": 4, "gamesPitched": 6, "gamesPlayed": 6, "gamesStarted": 0, "groundIntoDoublePlay": 1, "groundOuts": 7, "groundOutsToAirouts": "1.17", "hitBatsmen": 0, "hitByPitch": 0, "hits": 5, "hitsPer9Inn": "5.87", "holds": 0, "homeRuns": 1, "homeRunsPer9": "1.17", "inheritedRunners": 5, "inheritedRunnersScored": 0, "inningsPitched": "7.2", "intentionalWalks": 0, "losses": 1, "numberOfPitches": 112, "obp": ".267", "ops": ".637", "outs": 23, "pickoffs": 0, "pitchesPerInning": "14.61", "runs": 2, "runsScoredPer9": "2.35", "sacBunts": 0, "sacFlies": 0, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".370", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 9, "strikePercentage": ".670", "strikeoutWalkRatio": "3.00", "strikeoutsPer9Inn": "10.57", "strikes": 75, "totalBases": 10, "triples": 0, "walksPer9Inn": "3.52", "whip": "1.04", "wildPitches": 0, "winPercentage": ".000", "wins": 0}}, {"available_score": 0.3, "days_rest": 1, "id": 548384, "last_date": "2026-05-08", "last_ip": 1.0, "last_was_start": false, "name": "Brooks Raley", "season_stats": {"age": 38, "airOuts": 14, "atBats": 51, "avg": ".157", "balks": 0, "baseOnBalls": 5, "battersFaced": 57, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "completeGames": 0, "doubles": 0, "earnedRuns": 2, "era": "1.20", "gamesFinished": 2, "gamesPitched": 16, "gamesPlayed": 16, "gamesStarted": 0, "groundIntoDoublePlay": 1, "groundOuts": 12, "groundOutsToAirouts": "0.86", "hitBatsmen": 0, "hitByPitch": 0, "hits": 8, "hitsPer9Inn": "4.80", "holds": 5, "homeRuns": 1, "homeRunsPer9": "0.60", "inheritedRunners": 5, "inheritedRunnersScored": 3, "inningsPitched": "15.0", "intentionalWalks": 1, "losses": 1, "numberOfPitches": 211, "obp": ".232", "ops": ".448", "outs": 45, "pickoffs": 0, "pitchesPerInning": "14.07", "runs": 2, "runsScoredPer9": "1.20", "sacBunts": 1, "sacFlies": 0, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".216", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 18, "strikePercentage": ".650", "strikeoutWalkRatio": "3.60", "strikeoutsPer9Inn": "10.80", "strikes": 138, "totalBases": 11, "triples": 0, "walksPer9Inn": "3.00", "whip": "0.87", "wildPitches": 1, "winPercentage": ".000", "wins": 0}}, {"available_score": 1.0, "days_rest": 2, "id": 518886, "last_date": "2026-05-07", "last_ip": 1.0, "last_was_start": false, "name": "Craig Kimbrel", "season_stats": {"age": 38, "airOuts": 8, "atBats": 32, "avg": ".313", "balks": 0, "baseOnBalls": 4, "battersFaced": 37, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 1, "caughtStealingPercentage": "1.000", "completeGames": 0, "doubles": 1, "earnedRuns": 7, "era": "7.56", "gamesFinished": 4, "gamesPitched": 9, "gamesPlayed": 9, "gamesStarted": 0, "groundIntoDoublePlay": 1, "groundOuts": 4, "groundOutsToAirouts": "0.50", "hitBatsmen": 0, "hitByPitch": 0, "hits": 10, "hitsPer9Inn": "10.80", "holds": 1, "homeRuns": 1, "homeRunsPer9": "1.08", "inheritedRunners": 0, "inheritedRunnersScored": 0, "inningsPitched": "8.1", "intentionalWalks": 1, "losses": 2, "numberOfPitches": 134, "obp": ".378", "ops": ".878", "outs": 25, "pickoffs": 0, "pitchesPerInning": "16.08", "runs": 8, "runsScoredPer9": "8.64", "sacBunts": 0, "sacFlies": 1, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".500", "stolenBasePercentage": ".000", "stolenBases": 0, "strikeOuts": 11, "strikePercentage": ".650", "strikeoutWalkRatio": "2.75", "strikeoutsPer9Inn": "11.88", "strikes": 87, "totalBases": 16, "triples": 1, "walksPer9Inn": "4.32", "whip": "1.68", "wildPitches": 1, "winPercentage": ".000", "wins": 0}}, {"available_score": 1.0, "days_rest": 5, "id": 656849, "last_date": "2026-05-04", "last_ip": 4.0, "last_was_start": false, "name": "David Peterson", "season_stats": {"age": 30, "airOuts": 26, "atBats": 138, "avg": ".297", "balks": 0, "baseOnBalls": 14, "battersFaced": 159, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 1, "caughtStealingPercentage": ".333", "completeGames": 0, "doubles": 5, "earnedRuns": 24, "era": "6.29", "gamesFinished": 0, "gamesPitched": 8, "gamesPlayed": 8, "gamesStarted": 5, "groundIntoDoublePlay": 2, "groundOuts": 41, "groundOutsToAirouts": "1.58", "hitBatsmen": 2, "hitByPitch": 2, "hits": 41, "hitsPer9Inn": "10.75", "holds": 1, "homeRuns": 2, "homeRunsPer9": "0.52", "inheritedRunners": 1, "inheritedRunnersScored": 1, "inningsPitched": "34.1", "intentionalWalks": 0, "losses": 4, "numberOfPitches": 559, "obp": ".361", "ops": ".781", "outs": 103, "pickoffs": 0, "pitchesPerInning": "16.28", "runs": 25, "runsScoredPer9": "6.55", "sacBunts": 1, "sacFlies": 4, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".420", "stolenBasePercentage": ".667", "stolenBases": 2, "strikeOuts": 35, "strikePercentage": ".640", "strikeoutWalkRatio": "2.50", "strikeoutsPer9Inn": "9.17", "strikes": 360, "totalBases": 58, "triples": 3, "walksPer9Inn": "3.67", "whip": "1.60", "wildPitches": 1, "winPercentage": ".200", "wins": 1}}, {"available_score": 0.3, "days_rest": 1, "id": 642207, "last_date": "2026-05-08", "last_ip": 1.0, "last_was_start": false, "name": "Devin Williams", "season_stats": {"age": 31, "airOuts": 8, "atBats": 51, "avg": ".294", "balks": 0, "baseOnBalls": 6, "battersFaced": 58, "blownSaves": 1, "catchersInterference": 0, "caughtStealing": 2, "caughtStealingPercentage": ".400", "completeGames": 0, "doubles": 3, "earnedRuns": 8, "era": "5.68", "gamesFinished": 8, "gamesPitched": 15, "gamesPlayed": 15, "gamesStarted": 0, "groundIntoDoublePlay": 0, "groundOuts": 8, "groundOutsToAirouts": "1.00", "hitBatsmen": 0, "hitByPitch": 0, "hits": 15, "hitsPer9Inn": "10.66", "holds": 0, "homeRuns": 1, "homeRunsPer9": "0.71", "inheritedRunners": 3, "inheritedRunnersScored": 0, "inningsPitched": "12.2", "intentionalWalks": 0, "losses": 1, "numberOfPitches": 235, "obp": ".368", "ops": ".780", "outs": 38, "pickoffs": 0, "pitchesPerInning": "18.55", "runs": 8, "runsScoredPer9": "5.68", "sacBunts": 1, "sacFlies": 0, "saveOpportunities": 6, "saves": 5, "shutouts": 0, "slg": ".412", "stolenBasePercentage": ".600", "stolenBases": 3, "strikeOuts": 21, "strikePercentage": ".650", "strikeoutWalkRatio": "3.50", "strikeoutsPer9Inn": "14.92", "strikes": 152, "totalBases": 21, "triples": 0, "walksPer9Inn": "4.26", "whip": "1.66", "wildPitches": 0, "winPercentage": ".667", "wins": 2}}, {"available_score": 1.0, "days_rest": 2, "id": 623211, "last_date": "2026-05-07", "last_ip": 1.0, "last_was_start": false, "name": "Huascar Brazob\u00e1n", "season_stats": {"age": 36, "airOuts": 16, "atBats": 63, "avg": ".190", "balks": 0, "baseOnBalls": 5, "battersFaced": 69, "blownSaves": 2, "catchersInterference": 0, "caughtStealing": 1, "caughtStealingPercentage": ".500", "completeGames": 0, "doubles": 3, "earnedRuns": 3, "era": "1.53", "gamesFinished": 0, "gamesPitched": 16, "gamesPlayed": 16, "gamesStarted": 1, "groundIntoDoublePlay": 2, "groundOuts": 21, "groundOutsToAirouts": "1.31", "hitBatsmen": 1, "hitByPitch": 1, "hits": 12, "hitsPer9Inn": "6.11", "holds": 1, "homeRuns": 1, "homeRunsPer9": "0.51", "inheritedRunners": 19, "inheritedRunnersScored": 9, "inningsPitched": "17.2", "intentionalWalks": 0, "losses": 0, "numberOfPitches": 267, "obp": ".261", "ops": ".547", "outs": 53, "pickoffs": 0, "pitchesPerInning": "15.11", "runs": 3, "runsScoredPer9": "1.53", "sacBunts": 0, "sacFlies": 0, "saveOpportunities": 2, "saves": 0, "shutouts": 0, "slg": ".286", "stolenBasePercentage": ".500", "stolenBases": 1, "strikeOuts": 14, "strikePercentage": ".650", "strikeoutWalkRatio": "2.80", "strikeoutsPer9Inn": "7.13", "strikes": 173, "totalBases": 18, "triples": 0, "walksPer9Inn": "2.55", "whip": "0.96", "wildPitches": 1, "winPercentage": "1.000", "wins": 2}}, {"available_score": 0.3, "days_rest": 1, "id": 596133, "last_date": "2026-05-08", "last_ip": 1.0, "last_was_start": false, "name": "Luke Weaver", "season_stats": {"age": 32, "airOuts": 16, "atBats": 60, "avg": ".217", "balks": 0, "baseOnBalls": 6, "battersFaced": 68, "blownSaves": 2, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "completeGames": 0, "doubles": 1, "earnedRuns": 8, "era": "4.41", "gamesFinished": 2, "gamesPitched": 16, "gamesPlayed": 16, "gamesStarted": 0, "groundIntoDoublePlay": 0, "groundOuts": 17, "groundOutsToAirouts": "1.06", "hitBatsmen": 0, "hitByPitch": 0, "hits": 13, "hitsPer9Inn": "7.16", "holds": 4, "homeRuns": 2, "homeRunsPer9": "1.10", "inheritedRunners": 6, "inheritedRunnersScored": 2, "inningsPitched": "16.1", "intentionalWalks": 0, "losses": 1, "numberOfPitches": 269, "obp": ".284", "ops": ".651", "outs": 49, "pickoffs": 1, "pitchesPerInning": "16.47", "runs": 8, "runsScoredPer9": "4.41", "sacBunts": 1, "sacFlies": 1, "saveOpportunities": 2, "saves": 0, "shutouts": 0, "slg": ".367", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 16, "strikePercentage": ".660", "strikeoutWalkRatio": "2.67", "strikeoutsPer9Inn": "8.82", "strikes": 178, "totalBases": 22, "triples": 1, "walksPer9Inn": "3.31", "whip": "1.16", "wildPitches": 0, "winPercentage": ".667", "wins": 2}}, {"available_score": 1.0, "days_rest": 3, "id": 640455, "last_date": "2026-05-06", "last_ip": 0.1, "last_was_start": false, "name": "Sean Manaea", "season_stats": {"age": 34, "airOuts": 28, "atBats": 93, "avg": ".312", "balks": 0, "baseOnBalls": 10, "battersFaced": 108, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".000", "completeGames": 0, "doubles": 7, "earnedRuns": 17, "era": "6.85", "gamesFinished": 5, "gamesPitched": 8, "gamesPlayed": 8, "gamesStarted": 0, "groundIntoDoublePlay": 1, "groundOuts": 14, "groundOutsToAirouts": "0.50", "hitBatsmen": 3, "hitByPitch": 3, "hits": 29, "hitsPer9Inn": "11.69", "holds": 0, "homeRuns": 3, "homeRunsPer9": "1.21", "inheritedRunners": 6, "inheritedRunnersScored": 4, "inningsPitched": "22.1", "intentionalWalks": 0, "losses": 0, "numberOfPitches": 437, "obp": ".393", "ops": ".898", "outs": 67, "pickoffs": 0, "pitchesPerInning": "19.57", "runs": 17, "runsScoredPer9": "6.85", "sacBunts": 1, "sacFlies": 1, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".505", "stolenBasePercentage": "1.000", "stolenBases": 1, "strikeOuts": 24, "strikePercentage": ".640", "strikeoutWalkRatio": "2.40", "strikeoutsPer9Inn": "9.67", "strikes": 278, "totalBases": 47, "triples": 1, "walksPer9Inn": "4.03", "whip": "1.75", "wildPitches": 1, "winPercentage": ".---", "wins": 0}}, {"available_score": 0.3, "days_rest": 1, "id": 668964, "last_date": "2026-05-08", "last_ip": 1.0, "last_was_start": false, "name": "Tobias Myers", "season_stats": {"age": 27, "airOuts": 27, "atBats": 89, "avg": ".225", "balks": 0, "baseOnBalls": 4, "battersFaced": 93, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".000", "completeGames": 0, "doubles": 4, "earnedRuns": 9, "era": "3.42", "gamesFinished": 3, "gamesPitched": 12, "gamesPlayed": 12, "gamesStarted": 1, "groundIntoDoublePlay": 2, "groundOuts": 24, "groundOutsToAirouts": "0.89", "hitBatsmen": 0, "hitByPitch": 0, "hits": 20, "hitsPer9Inn": "7.61", "holds": 2, "homeRuns": 4, "homeRunsPer9": "1.52", "inheritedRunners": 3, "inheritedRunnersScored": 0, "inningsPitched": "23.2", "intentionalWalks": 1, "losses": 1, "numberOfPitches": 329, "obp": ".258", "ops": ".662", "outs": 71, "pickoffs": 0, "pitchesPerInning": "13.90", "runs": 11, "runsScoredPer9": "4.18", "sacBunts": 0, "sacFlies": 0, "saveOpportunities": 1, "saves": 1, "shutouts": 0, "slg": ".404", "stolenBasePercentage": "1.000", "stolenBases": 1, "strikeOuts": 18, "strikePercentage": ".660", "strikeoutWalkRatio": "4.50", "strikeoutsPer9Inn": "6.85", "strikes": 218, "totalBases": 36, "triples": 0, "walksPer9Inn": "1.52", "whip": "1.01", "wildPitches": 0, "winPercentage": ".000", "wins": 0}}], "unavailable_count": 4}, "opponent_catcher": null, "opponent_id": 121, "opponent_name": "New York Mets", "opponent_pitcher_days_rest": 6, "opponent_pitcher_id": 605280, "opponent_pitcher_name": "Clay Holmes", "opponent_pitcher_recent": {"airOuts": 27, "atBats": 108, "avg": ".194", "balks": 0, "baseOnBalls": 9, "battersFaced": 119, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "completeGames": 0, "doubles": 4, "earnedRuns": 6, "era": "1.80", "flyOuts": 15, "gamesFinished": 0, "gamesPitched": 5, "gamesPlayed": 5, "gamesStarted": 5, "groundIntoDoublePlay": 3, "groundOuts": 39, "groundOutsToAirouts": "1.44", "hitBatsmen": 1, "hitByPitch": 1, "hits": 21, "hitsPer9Inn": "6.30", "holds": 0, "homeRuns": 2, "homeRunsPer9": "0.60", "inheritedRunners": 0, "inheritedRunnersScored": 0, "inningsPitched": 30.0, "intentionalWalks": 0, "losses": 2, "numberOfPitches": 450, "obp": ".261", "ops": ".548", "outs": 90, "pickoffs": 0, "pitchesPerInning": "15.00", "runs": 6, "runsScoredPer9": "1.80", "sacBunts": 0, "sacFlies": 1, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".287", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 22, "strikePercentage": ".670", "strikeoutWalkRatio": "2.44", "strikeoutsPer9Inn": "6.60", "strikes": 302, "totalBases": 31, "triples": 0, "walksPer9Inn": "2.70", "whip": "1.00", "wildPitches": 2, "winPercentage": ".500", "wins": 2}, "opponent_pitcher_stats": {"age": 33, "airOuts": 36, "atBats": 152, "avg": ".184", "balks": 1, "baseOnBalls": 14, "battersFaced": 168, "blownSaves": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "completeGames": 0, "doubles": 5, "earnedRuns": 8, "era": "1.69", "gamesFinished": 0, "gamesPitched": 7, "gamesPlayed": 7, "gamesStarted": 7, "groundIntoDoublePlay": 4, "groundOuts": 58, "groundOutsToAirouts": "1.61", "hitBatsmen": 1, "hitByPitch": 1, "hits": 28, "hitsPer9Inn": "5.91", "holds": 0, "homeRuns": 3, "homeRunsPer9": "0.63", "inheritedRunners": 0, "inheritedRunnersScored": 0, "inningsPitched": "42.2", "intentionalWalks": 0, "losses": 2, "numberOfPitches": 630, "obp": ".256", "ops": ".532", "outs": 128, "pickoffs": 0, "pitchesPerInning": "14.77", "runs": 8, "runsScoredPer9": "1.69", "sacBunts": 0, "sacFlies": 1, "saveOpportunities": 0, "saves": 0, "shutouts": 0, "slg": ".276", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 31, "strikePercentage": ".670", "strikeoutWalkRatio": "2.21", "strikeoutsPer9Inn": "6.54", "strikes": 420, "throws": "R", "totalBases": 42, "triples": 0, "walksPer9Inn": "2.95", "whip": "0.98", "wildPitches": 2, "winPercentage": ".667", "wins": 4}, "status": "Scheduled", "team_lineup": {}, "team_pitcher_id": 518876, "team_pitcher_name": "Merrill Kelly", "venue_id": 15, "venue_name": "Chase Field", "weather": {}}, "generated_at_unix": 1778343313, "league": "MLB", "odds_meta": {"configured": true, "credits_remaining": 416, "credits_used": 84, "error": null, "event_id": "5e7a25171efa4aba6c2670c7d93dbde3", "fetched": true}, "players": [{"diagnostics": {"ab_per_pa": 0.9328859060402684, "bb": {"batter_bb_rate": 0.06711409395973154, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.06455714183533826, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.16023491410952873, "platoon_avg": 0.1836734693877551, "recent_avg": 0.2, "recent_pa": 126.0, "season_avg": 0.20863309352517986, "statcast_ba_diff": -0.07999999999999999, "statcast_lift": -0.04, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 9.1, "base_rate": 0.0383215144991769, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 0.989, "effective_hr_per_9": 0.8003132729282042, "final": 0.03485136872253104, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": -0.10500000000000004, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.19463087248322147, "blended_batter_k": 0.1935922019814637, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.17475893019912123, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.19047619047619047, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.09409927425588033, "2B": 0.02158273381294964, "3B": 0.007194244604316547, "HR": 0.037358661436382196, "out": 0.8397650858904713}, "rbis": {"final": 0.2586698113207547, "platoon_rbi_per_g": 0.3650943396226415, "pq_mult": 0.7, "season_rbi_per_g": 0.37142857142857144}, "runs": {"final": 0.37999999999999995, "pq_mult": 0.7, "season_r_per_g": 0.5428571428571428}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.2961, "fair_prob": 0.5653, "implied_prob": 0.6047, "kelly_frac": 0.0812, "line": 2.5, "market": "batter_hits_runs_rbis", "model_p5": 0.084, "model_p95": 0.202, "model_prob": 0.8614, "price": -153, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.2188, "fair_prob": 0.6581, "implied_prob": 0.7024, "kelly_frac": 0.0733, "line": 1.5, "market": "batter_hits", "model_p5": 0.055, "model_p95": 0.2, "model_prob": 0.8769, "price": -236, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.998, "edge": 0.199, "fair_prob": 0.5212, "implied_prob": 0.5575, "kelly_frac": 0.046, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.185, "model_p95": 0.377, "model_prob": 0.7202, "price": -126, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.1975, "fair_prob": 0.4864, "implied_prob": 0.5261, "kelly_frac": 0.0416, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.249, "model_p95": 0.376, "model_prob": 0.6839, "price": -111, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.2188, "fair_prob": 0.3419, "implied_prob": 0.365, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits", "model_p5": 0.055, "model_p95": 0.2, "model_prob": 0.1231, "price": 174, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.2961, "fair_prob": 0.4347, "implied_prob": 0.4651, "kelly_frac": 0.0, "line": 2.5, "market": "batter_hits_runs_rbis", "model_p5": 0.084, "model_p95": 0.202, "model_prob": 0.1386, "price": 115, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1975, "fair_prob": 0.5136, "implied_prob": 0.5556, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.249, "model_p95": 0.376, "model_prob": 0.3161, "price": -125, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.199, "fair_prob": 0.4788, "implied_prob": 0.5122, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.185, "model_p95": 0.377, "model_prob": 0.2798, "price": -105, "side": "Over"}], "handedness": "S", "id": 606466, "last_15": {"atBats": 120, "avg": 0.2, "baseOnBalls": 6, "doubles": 2, "games": 2, "hits": 24, "homeRuns": 2, "hrRate": 0.0159, "kRate": 0.1905, "obp": 0.238, "plateAppearances": 126, "rbi": 8, "slg": 0.3, "strikeOuts": 24, "totalBases": 36, "triples": 2}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.36074923777639123, "p_at_least_one_hr": 0.04182761699447668, "p_over_0_5_bb": 0.08945120004787721, "p_over_0_5_hits": 0.36074923777639123, "p_over_0_5_hrr": 0.6389587356794217, "p_over_0_5_k": 0.40099083852358797, "p_over_0_5_rbis": 0.1666178277248378, "p_over_0_5_runs": 0.24935095081414382, "p_over_0_5_tb": 0.3607492377763912, "p_over_1_5_bb": 0.0031183806915353607, "p_over_1_5_hits": 0.055438313348866286, "p_over_1_5_hrr": 0.27114324632351083, "p_over_1_5_k": 0.07348310196699426, "p_over_1_5_rbis": 0.01472313304424877, "p_over_1_5_runs": 0.034052006608505714, "p_over_1_5_tb": 0.18456152992889824, "p_over_2_5_hits": 0.003634010875370519, "p_over_2_5_hrr": 0.08378483666261105, "p_over_2_5_k": 0.006328833653048482, "p_over_2_5_rbis": 0.0008807453380647035, "p_over_2_5_tb": 0.1026193976558407, "p_over_3_5_hrr": 0.02016023014747781, "p_over_3_5_tb": 0.058076368013997536}, "p50": {"p_at_least_one_hit": 0.49625407810271893, "p_at_least_one_hr": 0.14141986144383378, "p_over_0_5_bb": 0.24507585834022638, "p_over_0_5_hits": 0.49625407810271893, "p_over_0_5_hrr": 0.7205885944935988, "p_over_0_5_k": 0.550838708645141, "p_over_0_5_rbis": 0.22963418563294824, "p_over_0_5_runs": 0.31465178790987136, "p_over_0_5_tb": 0.4962540781027187, "p_over_1_5_bb": 0.0254677926643454, "p_over_1_5_hits": 0.11947198101945411, "p_over_1_5_hrr": 0.36431949044273126, "p_over_1_5_k": 0.15409000925028626, "p_over_1_5_rbis": 0.028653607513189017, "p_over_1_5_runs": 0.055707885273933666, "p_over_1_5_tb": 0.28234606480449786, "p_over_2_5_hits": 0.013811963442509345, "p_over_2_5_hrr": 0.13718546513126284, "p_over_2_5_k": 0.020965119130850418, "p_over_2_5_rbis": 0.002436716765940261, "p_over_2_5_tb": 0.19620265403203543, "p_over_3_5_hrr": 0.040648203704247265, "p_over_3_5_tb": 0.15742962309594566}, "p95": {"p_at_least_one_hit": 0.6145425678943399, "p_at_least_one_hr": 0.23376900451549232, "p_over_0_5_bb": 0.37401287469681765, "p_over_0_5_hits": 0.6145425678943399, "p_over_0_5_hrr": 0.7862981391933697, "p_over_0_5_k": 0.6885047216563882, "p_over_0_5_rbis": 0.29158116668947354, "p_over_0_5_runs": 0.3764634060889891, "p_over_0_5_tb": 0.6145425678943396, "p_over_1_5_bb": 0.06603941816525172, "p_over_1_5_hits": 0.2000800361815629, "p_over_1_5_hrr": 0.4565191101149786, "p_over_1_5_k": 0.269942406787942, "p_over_1_5_rbis": 0.047375176849611234, "p_over_1_5_runs": 0.0819372524789328, "p_over_1_5_tb": 0.376527490940313, "p_over_2_5_hits": 0.0342925960330015, "p_over_2_5_hrr": 0.20206599583373863, "p_over_2_5_k": 0.058945005648855964, "p_over_2_5_rbis": 0.005283858360111138, "p_over_2_5_tb": 0.2879408426359302, "p_over_3_5_hrr": 0.0711775692240304, "p_over_3_5_tb": 0.2526692139095327}}, "model": {"expected_ab": 4.01, "expected_hits": 0.643, "expected_hrs": 0.15, "expected_pa": 4.3, "expected_rbis": 0.259, "expected_runs": 0.38, "expected_strikeouts": 0.751, "expected_total_bases": 1.237, "p_at_least_one_hit": 0.504, "p_at_least_one_hr": 0.141, "p_hit_per_ab": 0.16, "p_hr_per_pa": 0.0349, "p_k_per_pa": 0.175, "p_over_0_5_hits": 0.503, "p_over_0_5_k": 0.536, "p_over_0_5_rbis": 0.228, "p_over_0_5_runs": 0.316, "p_over_0_5_tb": 0.503, "p_over_1_5_hits": 0.123, "p_over_1_5_k": 0.143, "p_over_1_5_rbis": 0.028, "p_over_1_5_runs": 0.056, "p_over_1_5_tb": 0.28, "p_over_2_5_hits": 0.014, "p_over_2_5_k": 0.019, "p_over_2_5_rbis": 0.002, "p_over_2_5_tb": 0.191, "p_over_3_5_tb": 0.154}, "name": "Ketel Marte", "odds": {"batter_hits": [{"book": "draftkings", "line": 1.5, "price": 174, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -236, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 2.5, "price": 115, "side": "Over"}, {"book": "draftkings", "line": 2.5, "price": -153, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": -125, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -111, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": -105, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -126, "side": "Under"}]}, "platoon_split": {"airOuts": 27, "atBats": 98, "atBatsPerHomeRun": "19.60", "avg": ".184", "babip": ".178", "baseOnBalls": 8, "catchersInterference": 0, "doubles": 1, "gamesPlayed": 33, "groundIntoDoublePlay": 2, "groundIntoTriplePlay": 0, "groundOuts": 33, "groundOutsToAirouts": "1.22", "hitByPitch": 0, "hits": 18, "homeRuns": 5, "intentionalWalks": 0, "leftOnBase": 37, "numberOfPitches": 400, "obp": ".245", "ops": ".612", "plateAppearances": 106, "rbi": 9, "sacBunts": 0, "sacFlies": 0, "slg": ".367", "strikeOuts": 20, "totalBases": 36, "triples": 1}, "position": "2B", "season": {"AB": 139, "AVG": ".209", "BB%": 6.7, "H": 29, "HR": 5, "K%": 19.5, "OBP": ".262", "OPS": ".615", "PA": 149, "SLG": ".353"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8947368421052632, "bb": {"batter_bb_rate": 0.10526315789473684, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.10141077716650407, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.2250816993464052, "platoon_avg": 0.19444444444444445, "recent_avg": 0.23529411764705882, "recent_pa": 114.0, "season_avg": 0.23529411764705882, "statcast_ba_diff": null, "statcast_lift": 0.0, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": null, "base_rate": 0.0, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.0, "effective_hr_per_9": 0.8003132729282042, "final": 0.005, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": null, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.15789473684210525, "blended_batter_k": 0.15789473684210525, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.14192304310377743, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.15789473684210525, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.18027777777777776, "2B": 0.0392156862745098, "3B": 0.0, "HR": 0.005588235294117647, "out": 0.7749183006535948}, "rbis": {"final": 0.2060731707317073, "platoon_rbi_per_g": 0.31463414634146336, "pq_mult": 0.7, "season_rbi_per_g": 0.2857142857142857}, "runs": {"final": 0.19999999999999998, "pq_mult": 0.7, "season_r_per_g": 0.2857142857142857}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.2004, "fair_prob": 0.6183, "implied_prob": 0.6667, "kelly_frac": 0.057, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.111, "model_p95": 0.247, "model_prob": 0.8187, "price": -200, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.845, "edge": 0.1237, "fair_prob": 0.5131, "implied_prob": 0.5495, "kelly_frac": 0.0242, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.231, "model_p95": 0.507, "model_prob": 0.6368, "price": -122, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.682, "edge": 0.077, "fair_prob": 0.6192, "implied_prob": 0.661, "kelly_frac": 0.013, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.153, "model_p95": 0.457, "model_prob": 0.6962, "price": -195, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.502, "edge": 0.0098, "fair_prob": 0.3508, "implied_prob": 0.3745, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.422, "model_p95": 0.784, "model_prob": 0.3606, "price": 167, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.2004, "fair_prob": 0.3817, "implied_prob": 0.4115, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.111, "model_p95": 0.247, "model_prob": 0.1813, "price": 143, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.26, "edge": -0.0098, "fair_prob": 0.6492, "implied_prob": 0.6933, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.422, "model_p95": 0.784, "model_prob": 0.6394, "price": -226, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.025, "edge": -0.1237, "fair_prob": 0.4869, "implied_prob": 0.5215, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.231, "model_p95": 0.507, "model_prob": 0.3632, "price": -109, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.142, "edge": -0.077, "fair_prob": 0.3808, "implied_prob": 0.4065, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.153, "model_p95": 0.457, "model_prob": 0.3038, "price": 146, "side": "Over"}], "handedness": "R", "id": 666971, "last_15": {"atBats": 102, "avg": 0.235, "baseOnBalls": 12, "doubles": 4, "games": 2, "hits": 24, "homeRuns": 0, "hrRate": 0.0, "kRate": 0.1579, "obp": 0.316, "plateAppearances": 114, "rbi": 8, "slg": 0.275, "strikeOuts": 18, "totalBases": 28, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.4223602381855597, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.1213497349283712, "p_over_0_5_hits": 0.4223602381855597, "p_over_0_5_hrr": 0.5969155610609733, "p_over_0_5_k": 0.2196325608954769, "p_over_0_5_rbis": 0.11531208387302716, "p_over_0_5_runs": 0.11078061214733848, "p_over_0_5_tb": 0.4223602381855596, "p_over_1_5_bb": 0.0058220773161640205, "p_over_1_5_hits": 0.08155544105475887, "p_over_1_5_hrr": 0.2306693261919328, "p_over_1_5_k": 0.01998401158318608, "p_over_1_5_rbis": 0.006919825513847733, "p_over_1_5_runs": 0.0063762136793305, "p_over_1_5_tb": 0.15329485804646276, "p_over_2_5_hits": 0.0064218919157514875, "p_over_2_5_hrr": 0.06428197456306117, "p_over_2_5_k": 0.0008297927281676332, "p_over_2_5_rbis": 0.00027969770265423577, "p_over_2_5_tb": 0.04572960758742513, "p_over_3_5_hrr": 0.013888281019755921, "p_over_3_5_tb": 0.013049606789701013}, "p50": {"p_at_least_one_hit": 0.6249723640787757, "p_at_least_one_hr": 0.01906842280897547, "p_over_0_5_bb": 0.35255134895592477, "p_over_0_5_hits": 0.6249723640787757, "p_over_0_5_hrr": 0.7217562951114287, "p_over_0_5_k": 0.4707442806713398, "p_over_0_5_rbis": 0.18358335443614848, "p_over_0_5_runs": 0.18098524815301809, "p_over_0_5_tb": 0.6249723640787755, "p_over_1_5_bb": 0.055735747677294945, "p_over_1_5_hits": 0.2072407547979539, "p_over_1_5_hrr": 0.36581083388392854, "p_over_1_5_k": 0.1068157759025643, "p_over_1_5_rbis": 0.01798919125782883, "p_over_1_5_runs": 0.01746634580323081, "p_over_1_5_tb": 0.29813214218981293, "p_over_2_5_hits": 0.03354959516428213, "p_over_2_5_hrr": 0.13813780994400426, "p_over_2_5_k": 0.012012540853078457, "p_over_2_5_rbis": 0.0011954211725866415, "p_over_2_5_tb": 0.11586791219684325, "p_over_3_5_hrr": 0.04105363745834101, "p_over_3_5_tb": 0.04561169276723478}, "p95": {"p_at_least_one_hit": 0.7844965535505422, "p_at_least_one_hr": 0.08861566108394059, "p_over_0_5_bb": 0.5398755476937642, "p_over_0_5_hits": 0.7844965535505422, "p_over_0_5_hrr": 0.8174879079427952, "p_over_0_5_k": 0.6710437913520912, "p_over_0_5_rbis": 0.24732416084625097, "p_over_0_5_runs": 0.24728836943043386, "p_over_0_5_tb": 0.7844965535505422, "p_over_1_5_bb": 0.1524877815871457, "p_over_1_5_hits": 0.38133517991536114, "p_over_1_5_hrr": 0.5070459999119159, "p_over_1_5_k": 0.2500541994355677, "p_over_1_5_rbis": 0.03347342245125473, "p_over_1_5_runs": 0.03346325422238383, "p_over_1_5_tb": 0.4569099681076327, "p_over_2_5_hits": 0.09862418409034668, "p_over_2_5_hrr": 0.2430246488453618, "p_over_2_5_k": 0.05229632582950794, "p_over_2_5_rbis": 0.003093718511572807, "p_over_2_5_tb": 0.21939153817725732, "p_over_3_5_hrr": 0.0933299243988267, "p_over_3_5_tb": 0.11722229300077878}}, "model": {"expected_ab": 3.85, "expected_hits": 0.866, "expected_hrs": 0.021, "expected_pa": 4.3, "expected_rbis": 0.206, "expected_runs": 0.2, "expected_strikeouts": 0.61, "expected_total_bases": 1.081, "p_at_least_one_hit": 0.625, "p_at_least_one_hr": 0.021, "p_hit_per_ab": 0.225, "p_hr_per_pa": 0.005, "p_k_per_pa": 0.142, "p_over_0_5_hits": 0.639, "p_over_0_5_k": 0.458, "p_over_0_5_rbis": 0.186, "p_over_0_5_runs": 0.181, "p_over_0_5_tb": 0.639, "p_over_1_5_hits": 0.22, "p_over_1_5_k": 0.099, "p_over_1_5_rbis": 0.019, "p_over_1_5_runs": 0.018, "p_over_1_5_tb": 0.304, "p_over_2_5_hits": 0.038, "p_over_2_5_k": 0.01, "p_over_2_5_rbis": 0.001, "p_over_2_5_tb": 0.114, "p_over_3_5_tb": 0.045}, "name": "Lourdes Gurriel Jr.", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -226, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 167, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -109, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -122, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 143, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -200, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": 146, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -195, "side": "Under"}]}, "platoon_split": {"airOuts": 14, "atBats": 36, "atBatsPerHomeRun": "-.--", "avg": ".194", "babip": ".233", "baseOnBalls": 5, "catchersInterference": 0, "doubles": 1, "gamesPlayed": 14, "groundIntoDoublePlay": 0, "groundIntoTriplePlay": 0, "groundOuts": 9, "groundOutsToAirouts": "0.64", "hitByPitch": 0, "hits": 7, "homeRuns": 0, "intentionalWalks": 0, "leftOnBase": 10, "numberOfPitches": 150, "obp": ".293", "ops": ".515", "plateAppearances": 41, "rbi": 3, "sacBunts": 0, "sacFlies": 0, "slg": ".222", "strikeOuts": 6, "totalBases": 8, "triples": 0}, "position": "LF", "season": {"AB": 51, "AVG": ".235", "BB%": 10.5, "H": 12, "HR": 0, "K%": 15.8, "OBP": ".316", "OPS": ".591", "PA": 57, "SLG": ".275"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8169014084507042, "bb": {"batter_bb_rate": 0.15492957746478872, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.14956336457219754, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.22216583161410747, "platoon_avg": 0.20512820512820512, "recent_avg": 0.25925925925925924, "recent_pa": 130.0, "season_avg": 0.22413793103448276, "statcast_ba_diff": -0.011999999999999983, "statcast_lift": -0.006, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 3.9, "base_rate": 0.012878333832783938, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 0.944, "effective_hr_per_9": 0.8003132729282042, "final": 0.011187079420880134, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.043999999999999984, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.1267605633802817, "blended_batter_k": 0.13737811484290358, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.12317819228231919, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.16923076923076924, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.1395057861161335, "2B": 0.04310344827586207, "3B": 0.02586206896551724, "HR": 0.013694528256594646, "out": 0.7778341683858925}, "rbis": {"final": 0.20656132665832289, "platoon_rbi_per_g": 0.22872340425531915, "pq_mult": 0.7, "season_rbi_per_g": 0.3235294117647059}, "runs": {"final": 0.28823529411764703, "pq_mult": 0.7, "season_r_per_g": 0.4117647058823529}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.2261, "fair_prob": 0.5235, "implied_prob": 0.5652, "kelly_frac": 0.053, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.19, "model_p95": 0.313, "model_prob": 0.7496, "price": -130, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.975, "edge": 0.1679, "fair_prob": 0.4677, "implied_prob": 0.5, "kelly_frac": 0.0339, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.265, "model_p95": 0.485, "model_prob": 0.6356, "price": 100, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.782, "edge": 0.0322, "fair_prob": 0.3338, "implied_prob": 0.3559, "kelly_frac": 0.002, "line": 0.5, "market": "batter_hits", "model_p5": 0.441, "model_p95": 0.716, "model_prob": 0.3661, "price": 181, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.637, "edge": 0.0216, "fair_prob": 0.6071, "implied_prob": 0.6491, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.219, "model_p95": 0.456, "model_prob": 0.6287, "price": -185, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1679, "fair_prob": 0.5323, "implied_prob": 0.569, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.265, "model_p95": 0.485, "model_prob": 0.3644, "price": -132, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.2261, "fair_prob": 0.4765, "implied_prob": 0.5146, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.19, "model_p95": 0.313, "model_prob": 0.2504, "price": -106, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.06, "edge": -0.0322, "fair_prob": 0.6662, "implied_prob": 0.7101, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.441, "model_p95": 0.716, "model_prob": 0.6339, "price": -245, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.115, "edge": -0.0216, "fair_prob": 0.3929, "implied_prob": 0.4202, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.219, "model_p95": 0.456, "model_prob": 0.3713, "price": 138, "side": "Over"}], "handedness": "S", "id": 672695, "last_15": {"atBats": 108, "avg": 0.259, "baseOnBalls": 22, "doubles": 6, "games": 2, "hits": 28, "homeRuns": 2, "hrRate": 0.0154, "kRate": 0.1692, "obp": 0.385, "plateAppearances": 130, "rbi": 14, "slg": 0.481, "strikeOuts": 22, "totalBases": 52, "triples": 6}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.4406360106698207, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.34484274082852884, "p_over_0_5_hits": 0.4406360106698207, "p_over_0_5_hrr": 0.6327058641903149, "p_over_0_5_k": 0.28346213537664045, "p_over_0_5_rbis": 0.1148073176226233, "p_over_0_5_runs": 0.18969522454279886, "p_over_0_5_tb": 0.4406360106698208, "p_over_1_5_bb": 0.052614811702281994, "p_over_1_5_hits": 0.08207240201632804, "p_over_1_5_hrr": 0.2648268888837164, "p_over_1_5_k": 0.034389090739837536, "p_over_1_5_rbis": 0.006858125356574596, "p_over_1_5_runs": 0.019251799366790667, "p_over_1_5_tb": 0.21923286215229404, "p_over_2_5_hits": 0.0054568982757488005, "p_over_2_5_hrr": 0.08059451586434807, "p_over_2_5_k": 0.001921835015716078, "p_over_2_5_rbis": 0.00027592673310905536, "p_over_2_5_tb": 0.11587402049231815, "p_over_3_5_hrr": 0.019085940949531754, "p_over_3_5_tb": 0.04244173354562823}, "p50": {"p_at_least_one_hit": 0.579973873435425, "p_at_least_one_hr": 0.048620715130415104, "p_over_0_5_bb": 0.4942947372505375, "p_over_0_5_hits": 0.579973873435425, "p_over_0_5_hrr": 0.7187114991312602, "p_over_0_5_k": 0.4228576941503126, "p_over_0_5_rbis": 0.18399134002666384, "p_over_0_5_runs": 0.25268412635484416, "p_over_0_5_tb": 0.579973873435425, "p_over_1_5_bb": 0.11919351433918579, "p_over_1_5_hits": 0.16707396549399567, "p_over_1_5_hrr": 0.3619323535604617, "p_over_1_5_k": 0.0835994550783905, "p_over_1_5_rbis": 0.01807204512026006, "p_over_1_5_runs": 0.035015429456524805, "p_over_1_5_tb": 0.3214160972679078, "p_over_2_5_hits": 0.020387841952973718, "p_over_2_5_hrr": 0.13566757856770773, "p_over_2_5_k": 0.007959901584660312, "p_over_2_5_rbis": 0.0012038341731251956, "p_over_2_5_tb": 0.18704793732851263, "p_over_3_5_hrr": 0.040004759261354494, "p_over_3_5_tb": 0.09957997975644751}, "p95": {"p_at_least_one_hit": 0.7162062782213783, "p_at_least_one_hr": 0.10561379833023687, "p_over_0_5_bb": 0.6321941854979558, "p_over_0_5_hits": 0.7162062782213783, "p_over_0_5_hrr": 0.8041970262957941, "p_over_0_5_k": 0.5762771518445207, "p_over_0_5_rbis": 0.254063097368761, "p_over_0_5_runs": 0.3127353320652929, "p_over_0_5_tb": 0.7162062782213783, "p_over_1_5_bb": 0.22359276535471495, "p_over_1_5_hits": 0.2960886608035287, "p_over_1_5_hrr": 0.48491161964564977, "p_over_1_5_k": 0.17542333274187705, "p_over_1_5_rbis": 0.0354183517015233, "p_over_1_5_runs": 0.05498647117415789, "p_over_1_5_tb": 0.45622998545798027, "p_over_2_5_hits": 0.06286625454483985, "p_over_2_5_hrr": 0.22459082632166583, "p_over_2_5_k": 0.028299903585932373, "p_over_2_5_rbis": 0.003374404928505048, "p_over_2_5_tb": 0.28041234783872343, "p_over_3_5_hrr": 0.08309377483238256, "p_over_3_5_tb": 0.1734030339276361}}, "model": {"expected_ab": 3.51, "expected_hits": 0.78, "expected_hrs": 0.048, "expected_pa": 4.3, "expected_rbis": 0.207, "expected_runs": 0.288, "expected_strikeouts": 0.53, "expected_total_bases": 1.258, "p_at_least_one_hit": 0.586, "p_at_least_one_hr": 0.047, "p_hit_per_ab": 0.222, "p_hr_per_pa": 0.0112, "p_k_per_pa": 0.123, "p_over_0_5_hits": 0.634, "p_over_0_5_k": 0.409, "p_over_0_5_rbis": 0.187, "p_over_0_5_runs": 0.25, "p_over_0_5_tb": 0.634, "p_over_1_5_hits": 0.216, "p_over_1_5_k": 0.077, "p_over_1_5_rbis": 0.019, "p_over_1_5_runs": 0.034, "p_over_1_5_tb": 0.371, "p_over_2_5_hits": 0.037, "p_over_2_5_k": 0.007, "p_over_2_5_rbis": 0.001, "p_over_2_5_tb": 0.22, "p_over_3_5_tb": 0.119}, "name": "Geraldo Perdomo", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -245, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 181, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -132, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": 100, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": -106, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -130, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": 138, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -185, "side": "Under"}]}, "platoon_split": {"airOuts": 20, "atBats": 78, "atBatsPerHomeRun": "78.00", "avg": ".205", "babip": ".234", "baseOnBalls": 15, "catchersInterference": 0, "doubles": 4, "gamesPlayed": 30, "groundIntoDoublePlay": 4, "groundIntoTriplePlay": 0, "groundOuts": 30, "groundOutsToAirouts": "1.50", "hitByPitch": 0, "hits": 16, "homeRuns": 1, "intentionalWalks": 0, "leftOnBase": 34, "numberOfPitches": 394, "obp": ".333", "ops": ".654", "plateAppearances": 94, "rbi": 5, "sacBunts": 1, "sacFlies": 0, "slg": ".321", "strikeOuts": 13, "totalBases": 25, "triples": 1}, "position": "SS", "season": {"AB": 116, "AVG": ".224", "BB%": 15.5, "H": 26, "HR": 2, "K%": 12.7, "OBP": ".343", "OPS": ".714", "PA": 142, "SLG": ".371"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.95, "bb": {"batter_bb_rate": 0.0375, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.03602773017883595, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.20395546558704455, "platoon_avg": 0.23076923076923078, "recent_avg": 0.16, "recent_pa": 108.0, "season_avg": 0.21052631578947367, "statcast_ba_diff": 0.0020000000000000018, "statcast_lift": 0.001, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 7.7, "base_rate": 0.03959239130434783, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.006, "effective_hr_per_9": 0.8003132729282042, "final": 0.03665375494377259, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.006000000000000005, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.3125, "blended_batter_k": 0.3177083333333333, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.2911602132591311, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.3333333333333333, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.125898881435705, "2B": 0.039473684210526314, "3B": 0.0, "HR": 0.03858289994081326, "out": 0.7960445344129554}, "rbis": {"final": 0.5526679841897233, "platoon_rbi_per_g": 0.9347826086956521, "pq_mult": 0.7, "season_rbi_per_g": 0.7272727272727273}, "runs": {"final": 0.22272727272727272, "pq_mult": 0.7, "season_r_per_g": 0.3181818181818182}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.1759, "fair_prob": 0.6245, "implied_prob": 0.6732, "kelly_frac": 0.0486, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.129, "model_p95": 0.26, "model_prob": 0.8003, "price": -206, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.44, "edge": 0.0101, "fair_prob": 0.3915, "implied_prob": 0.4184, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.409, "model_p95": 0.738, "model_prob": 0.4016, "price": 139, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.3, "edge": 0.006, "fair_prob": 0.4718, "implied_prob": 0.505, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.335, "model_p95": 0.581, "model_prob": 0.4778, "price": -102, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1759, "fair_prob": 0.3755, "implied_prob": 0.4049, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.129, "model_p95": 0.26, "model_prob": 0.1997, "price": 147, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.333, "edge": -0.006, "fair_prob": 0.5282, "implied_prob": 0.5652, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.335, "model_p95": 0.581, "model_prob": 0.5222, "price": -130, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.278, "edge": -0.0101, "fair_prob": 0.6085, "implied_prob": 0.6503, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.409, "model_p95": 0.738, "model_prob": 0.5984, "price": -186, "side": "Over"}], "handedness": "L", "id": 680728, "last_15": {"atBats": 100, "avg": 0.16, "baseOnBalls": 6, "doubles": 4, "games": 2, "hits": 16, "homeRuns": 4, "hrRate": 0.037, "kRate": 0.3333, "obp": 0.204, "plateAppearances": 108, "rbi": 16, "slg": 0.32, "strikeOuts": 36, "totalBases": 32, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.40940421704170415, "p_at_least_one_hr": 0.01899237631206363, "p_over_0_5_bb": 0.039403990000000055, "p_over_0_5_hits": 0.40940421704170415, "p_over_0_5_hrr": 0.696935316527059, "p_over_0_5_k": 0.6133447373663223, "p_over_0_5_rbis": 0.3391874210697121, "p_over_0_5_runs": 0.1293397106375629, "p_over_0_5_tb": 0.4094042170417043, "p_over_1_5_bb": 0.0005920300000000767, "p_over_1_5_hits": 0.0760847012169541, "p_over_1_5_hrr": 0.33513396392111683, "p_over_1_5_k": 0.20096418391906234, "p_over_1_5_rbis": 0.06542266790071305, "p_over_1_5_runs": 0.008750298659224165, "p_over_1_5_tb": 0.2184755557439741, "p_over_2_5_hits": 0.006451558463406615, "p_over_2_5_hrr": 0.11917310492651112, "p_over_2_5_k": 0.032447939953132776, "p_over_2_5_rbis": 0.008714349636700813, "p_over_2_5_tb": 0.09542209054598956, "p_over_3_5_hrr": 0.033234431154727906, "p_over_3_5_tb": 0.04083786052381244}, "p50": {"p_at_least_one_hit": 0.5914859924333709, "p_at_least_one_hr": 0.15424865158270473, "p_over_0_5_bb": 0.1424244897591892, "p_over_0_5_hits": 0.5914859924333709, "p_over_0_5_hrr": 0.7943881196932194, "p_over_0_5_k": 0.7629575005790276, "p_over_0_5_rbis": 0.4248433183107181, "p_over_0_5_runs": 0.1978268003318846, "p_over_0_5_tb": 0.591485992433371, "p_over_1_5_bb": 0.008168034883254904, "p_over_1_5_hits": 0.182352739596904, "p_over_1_5_hrr": 0.46915845134927714, "p_over_1_5_k": 0.35794967212332973, "p_over_1_5_rbis": 0.1067168040549551, "p_over_1_5_runs": 0.021003172535789538, "p_over_1_5_tb": 0.35614967688558136, "p_over_2_5_hits": 0.02776297774687142, "p_over_2_5_hrr": 0.21194000411439118, "p_over_2_5_k": 0.08885785577089611, "p_over_2_5_rbis": 0.01873688284872277, "p_over_2_5_tb": 0.21798455869655894, "p_over_3_5_hrr": 0.0763202948490036, "p_over_3_5_tb": 0.17336292708760281}, "p95": {"p_at_least_one_hit": 0.7384676268225068, "p_at_least_one_hr": 0.27164372577231766, "p_over_0_5_bb": 0.28382635689227254, "p_over_0_5_hits": 0.7384676268225068, "p_over_0_5_hrr": 0.8578497507796637, "p_over_0_5_k": 0.8734482178170982, "p_over_0_5_rbis": 0.4990275094607992, "p_over_0_5_runs": 0.26034135190768315, "p_over_0_5_tb": 0.7384676268225066, "p_over_1_5_bb": 0.03481827438352825, "p_over_1_5_hits": 0.32173268181188075, "p_over_1_5_hrr": 0.5805329963313118, "p_over_1_5_k": 0.5488938647350692, "p_over_1_5_rbis": 0.15275327576995612, "p_over_1_5_runs": 0.03728509288033133, "p_over_1_5_tb": 0.47335192142750687, "p_over_2_5_hits": 0.07295624051632421, "p_over_2_5_hrr": 0.3100284326053503, "p_over_2_5_k": 0.21730860611539582, "p_over_2_5_rbis": 0.03308019273387475, "p_over_2_5_tb": 0.32985796951337765, "p_over_3_5_hrr": 0.1341219578544095, "p_over_3_5_tb": 0.28560548145063247}}, "model": {"expected_ab": 4.08, "expected_hits": 0.833, "expected_hrs": 0.158, "expected_pa": 4.3, "expected_rbis": 0.553, "expected_runs": 0.223, "expected_strikeouts": 1.252, "expected_total_bases": 1.467, "p_at_least_one_hit": 0.606, "p_at_least_one_hr": 0.148, "p_hit_per_ab": 0.204, "p_hr_per_pa": 0.0367, "p_k_per_pa": 0.291, "p_over_0_5_hits": 0.598, "p_over_0_5_k": 0.748, "p_over_0_5_rbis": 0.425, "p_over_0_5_runs": 0.2, "p_over_0_5_tb": 0.598, "p_over_1_5_hits": 0.187, "p_over_1_5_k": 0.333, "p_over_1_5_rbis": 0.107, "p_over_1_5_runs": 0.021, "p_over_1_5_tb": 0.344, "p_over_2_5_hits": 0.029, "p_over_2_5_k": 0.077, "p_over_2_5_rbis": 0.019, "p_over_2_5_tb": 0.204, "p_over_3_5_tb": 0.16}, "name": "Adrian Del Castillo", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -186, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 139, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -102, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -130, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 147, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -206, "side": "Under"}]}, "platoon_split": {"airOuts": 15, "atBats": 65, "atBatsPerHomeRun": "21.67", "avg": ".231", "babip": ".279", "baseOnBalls": 3, "catchersInterference": 0, "doubles": 3, "gamesPlayed": 22, "groundIntoDoublePlay": 3, "groundIntoTriplePlay": 0, "groundOuts": 16, "groundOutsToAirouts": "1.07", "hitByPitch": 0, "hits": 15, "homeRuns": 3, "intentionalWalks": 0, "leftOnBase": 30, "numberOfPitches": 291, "obp": ".261", "ops": ".676", "plateAppearances": 69, "rbi": 15, "sacBunts": 0, "sacFlies": 1, "slg": ".415", "strikeOuts": 20, "totalBases": 27, "triples": 0}, "position": "C", "season": {"AB": 76, "AVG": ".211", "BB%": 3.8, "H": 16, "HR": 3, "K%": 31.2, "OBP": ".238", "OPS": ".606", "PA": 80, "SLG": ".368"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8928571428571429, "bb": {"batter_bb_rate": 0.07142857142857142, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.06871935223377784, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.173386524822695, "platoon_avg": 0.1702127659574468, "recent_avg": 0.1, "recent_pa": 70.0, "season_avg": 0.18666666666666668, "statcast_ba_diff": 0.024999999999999994, "statcast_lift": 0.0125, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 7.7, "base_rate": 0.007738095238095238, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.051, "effective_hr_per_9": 0.8003132729282042, "final": 0.007478206999919432, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.11599999999999999, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.2976190476190476, "blended_batter_k": 0.28035714285714286, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.25576017275575247, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.22857142857142856, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.03167759964945192, "2B": 0.12, "3B": 0.013333333333333334, "HR": 0.008375591839909763, "out": 0.826613475177305}, "rbis": {"final": 0.15791176470588233, "platoon_rbi_per_g": 0.16862745098039214, "pq_mult": 0.7, "season_rbi_per_g": 0.25}, "runs": {"final": 0.225, "pq_mult": 0.7, "season_r_per_g": 0.32142857142857145}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.1698, "fair_prob": 0.6287, "implied_prob": 0.6774, "kelly_frac": 0.0469, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.126, "model_p95": 0.263, "model_prob": 0.7985, "price": -210, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.953, "edge": 0.1562, "fair_prob": 0.5617, "implied_prob": 0.6016, "kelly_frac": 0.0365, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.163, "model_p95": 0.398, "model_prob": 0.7179, "price": -151, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.625, "edge": 0.046, "fair_prob": 0.4209, "implied_prob": 0.4505, "kelly_frac": 0.0037, "line": 0.5, "market": "batter_hits", "model_p5": 0.335, "model_p95": 0.673, "model_prob": 0.4669, "price": 122, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1698, "fair_prob": 0.3713, "implied_prob": 0.4, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.126, "model_p95": 0.263, "model_prob": 0.2015, "price": 150, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.003, "edge": -0.1562, "fair_prob": 0.4383, "implied_prob": 0.4695, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.163, "model_p95": 0.398, "model_prob": 0.2821, "price": 113, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.147, "edge": -0.046, "fair_prob": 0.5791, "implied_prob": 0.6198, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.335, "model_p95": 0.673, "model_prob": 0.5331, "price": -163, "side": "Over"}], "handedness": "S", "id": 678489, "last_15": {"atBats": 60, "avg": 0.1, "baseOnBalls": 8, "doubles": 4, "games": 2, "hits": 6, "homeRuns": 2, "hrRate": 0.0286, "kRate": 0.2286, "obp": 0.2, "plateAppearances": 70, "rbi": 6, "slg": 0.267, "strikeOuts": 16, "totalBases": 16, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.3350277041253372, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.0915731027302551, "p_over_0_5_hits": 0.3350277041253372, "p_over_0_5_hrr": 0.5137853708363281, "p_over_0_5_k": 0.5446977279551022, "p_over_0_5_rbis": 0.07334197373556661, "p_over_0_5_runs": 0.12630693086549627, "p_over_0_5_tb": 0.3353568780082253, "p_over_1_5_bb": 0.0032711704261364494, "p_over_1_5_hits": 0.04678744129560486, "p_over_1_5_hrr": 0.1631735080608887, "p_over_1_5_k": 0.14880899848115747, "p_over_1_5_rbis": 0.00275779694365319, "p_over_1_5_runs": 0.00833552427740969, "p_over_1_5_tb": 0.2851656084611061, "p_over_2_5_hits": 0.002994252683102494, "p_over_2_5_hrr": 0.036759501832496544, "p_over_2_5_k": 0.019723419723295055, "p_over_2_5_rbis": 6.957438895516255e-05, "p_over_2_5_tb": 0.08555579155107121, "p_over_3_5_hrr": 0.006373572419060114, "p_over_3_5_tb": 0.04676095505492137}, "p50": {"p_at_least_one_hit": 0.5182505973391991, "p_at_least_one_hr": 0.028434934846353066, "p_over_0_5_bb": 0.25626492475321727, "p_over_0_5_hits": 0.5182505973391991, "p_over_0_5_hrr": 0.6486988636221849, "p_over_0_5_k": 0.7050403003365531, "p_over_0_5_rbis": 0.14559073467297978, "p_over_0_5_runs": 0.2041726208094069, "p_over_0_5_tb": 0.5182505973391993, "p_over_1_5_bb": 0.028130113975428195, "p_over_1_5_hits": 0.13123329299516295, "p_over_1_5_hrr": 0.2811987101860305, "p_over_1_5_k": 0.2894226752156239, "p_over_1_5_rbis": 0.011153737370001249, "p_over_1_5_runs": 0.02242715307047083, "p_over_1_5_tb": 0.44806473593745927, "p_over_2_5_hits": 0.01574497260680907, "p_over_2_5_hrr": 0.08897564457324592, "p_over_2_5_k": 0.060802918220409286, "p_over_2_5_rbis": 0.000577244945774269, "p_over_2_5_tb": 0.17714430051857485, "p_over_3_5_hrr": 0.021946725704152903, "p_over_3_5_tb": 0.1201806143260193}, "p95": {"p_at_least_one_hit": 0.6725396680347118, "p_at_least_one_hr": 0.09732683952377319, "p_over_0_5_bb": 0.41619298491905, "p_over_0_5_hits": 0.6725396680347118, "p_over_0_5_hrr": 0.7463134461489658, "p_over_0_5_k": 0.8430991269459274, "p_over_0_5_rbis": 0.20737090028620764, "p_over_0_5_runs": 0.2628987790514433, "p_over_0_5_tb": 0.6725396680347115, "p_over_1_5_bb": 0.08439450846223884, "p_over_1_5_hits": 0.25348738655996483, "p_over_1_5_hrr": 0.3983428096320478, "p_over_1_5_k": 0.47841198840281995, "p_over_1_5_rbis": 0.023163988941926283, "p_over_1_5_runs": 0.03806075355196459, "p_over_1_5_tb": 0.5916367071426302, "p_over_2_5_hits": 0.04807307651234016, "p_over_2_5_hrr": 0.1596948362966346, "p_over_2_5_k": 0.16737626811973372, "p_over_2_5_rbis": 0.0017591564677890137, "p_over_2_5_tb": 0.29377265476876313, "p_over_3_5_hrr": 0.05058054292372027, "p_over_3_5_tb": 0.22195230360553675}}, "model": {"expected_ab": 3.84, "expected_hits": 0.666, "expected_hrs": 0.032, "expected_pa": 4.3, "expected_rbis": 0.158, "expected_runs": 0.225, "expected_strikeouts": 1.1, "expected_total_bases": 1.325, "p_at_least_one_hit": 0.519, "p_at_least_one_hr": 0.032, "p_hit_per_ab": 0.173, "p_hr_per_pa": 0.0075, "p_k_per_pa": 0.256, "p_over_0_5_hits": 0.533, "p_over_0_5_k": 0.693, "p_over_0_5_rbis": 0.146, "p_over_0_5_runs": 0.201, "p_over_0_5_tb": 0.533, "p_over_1_5_hits": 0.141, "p_over_1_5_k": 0.271, "p_over_1_5_rbis": 0.011, "p_over_1_5_runs": 0.022, "p_over_1_5_tb": 0.462, "p_over_2_5_hits": 0.018, "p_over_2_5_k": 0.054, "p_over_2_5_rbis": 0.001, "p_over_2_5_tb": 0.186, "p_over_3_5_tb": 0.125}, "name": "Jorge Barrosa", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -163, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 122, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": 113, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -151, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 150, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -210, "side": "Under"}]}, "platoon_split": {"airOuts": 9, "atBats": 47, "atBatsPerHomeRun": "-.--", "avg": ".170", "babip": ".276", "baseOnBalls": 3, "catchersInterference": 0, "doubles": 5, "gamesPlayed": 21, "groundIntoDoublePlay": 1, "groundIntoTriplePlay": 0, "groundOuts": 13, "groundOutsToAirouts": "1.44", "hitByPitch": 0, "hits": 8, "homeRuns": 0, "intentionalWalks": 0, "leftOnBase": 15, "numberOfPitches": 226, "obp": ".220", "ops": ".539", "plateAppearances": 51, "rbi": 2, "sacBunts": 1, "sacFlies": 0, "slg": ".319", "strikeOuts": 18, "totalBases": 15, "triples": 1}, "position": "LF", "season": {"AB": 75, "AVG": ".187", "BB%": 7.1, "H": 14, "HR": 1, "K%": 29.8, "OBP": ".256", "OPS": ".629", "PA": 84, "SLG": ".373"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8939393939393939, "bb": {"batter_bb_rate": 0.07575757575757576, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.07289705151730287, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.23346964919195903, "platoon_avg": 0.25, "recent_avg": 0.20930232558139536, "recent_pa": 98.0, "season_avg": 0.23728813559322035, "statcast_ba_diff": null, "statcast_lift": 0.0, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": null, "base_rate": 0.00984848484848485, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.0, "effective_hr_per_9": 0.8003132729282042, "final": 0.008884379096630292, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": null, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.21212121212121213, "blended_batter_k": 0.21521335807050093, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.1947847731800591, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.22448979591836735, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.12183627596522005, "2B": 0.1016949152542373, "3B": 0.0, "HR": 0.009938457972501683, "out": 0.766530350808041}, "rbis": {"final": 0.2984586466165413, "platoon_rbi_per_g": 0.4387755102040816, "pq_mult": 0.7, "season_rbi_per_g": 0.42105263157894735}, "runs": {"final": 0.29473684210526313, "pq_mult": 0.7, "season_r_per_g": 0.42105263157894735}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 1.0, "edge": 0.1602, "fair_prob": 0.5846, "implied_prob": 0.631, "kelly_frac": 0.0385, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.195, "model_p95": 0.309, "model_prob": 0.7447, "price": -171, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.637, "edge": 0.068, "fair_prob": 0.493, "implied_prob": 0.5283, "kelly_frac": 0.0087, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.316, "model_p95": 0.562, "model_prob": 0.561, "price": -112, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.568, "edge": 0.0457, "fair_prob": 0.3896, "implied_prob": 0.4167, "kelly_frac": 0.004, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.277, "model_p95": 0.579, "model_prob": 0.4353, "price": 140, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.307, "edge": 0.0006, "fair_prob": 0.6541, "implied_prob": 0.6979, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.445, "model_p95": 0.783, "model_prob": 0.6548, "price": -231, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1602, "fair_prob": 0.4154, "implied_prob": 0.4484, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.195, "model_p95": 0.309, "model_prob": 0.2553, "price": 123, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.435, "edge": -0.0006, "fair_prob": 0.3459, "implied_prob": 0.369, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.445, "model_p95": 0.783, "model_prob": 0.3452, "price": 171, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.08, "edge": -0.068, "fair_prob": 0.507, "implied_prob": 0.5434, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.316, "model_p95": 0.562, "model_prob": 0.439, "price": -119, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.203, "edge": -0.0457, "fair_prob": 0.6104, "implied_prob": 0.6528, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.277, "model_p95": 0.579, "model_prob": 0.5647, "price": -188, "side": "Under"}], "handedness": "R", "id": 672515, "last_15": {"atBats": 86, "avg": 0.209, "baseOnBalls": 8, "doubles": 8, "games": 2, "hits": 18, "homeRuns": 2, "hrRate": 0.0204, "kRate": 0.2245, "obp": 0.265, "plateAppearances": 98, "rbi": 12, "slg": 0.372, "strikeOuts": 22, "totalBases": 32, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.4448527442363095, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.08114819765505377, "p_over_0_5_hits": 0.4448527442363095, "p_over_0_5_hrr": 0.6802363316077076, "p_over_0_5_k": 0.4168951677675763, "p_over_0_5_rbis": 0.2046262602021831, "p_over_0_5_runs": 0.1946122116252781, "p_over_0_5_tb": 0.4448527442363095, "p_over_1_5_bb": 0.0025569050101444946, "p_over_1_5_hits": 0.09234409126619303, "p_over_1_5_hrr": 0.3156504010069707, "p_over_1_5_k": 0.08018299059285083, "p_over_1_5_rbis": 0.02253088136593928, "p_over_1_5_runs": 0.020301010789613216, "p_over_1_5_tb": 0.27670915319500883, "p_over_2_5_hits": 0.007155070718038892, "p_over_2_5_hrr": 0.10780486705323067, "p_over_2_5_k": 0.007452357461074421, "p_over_2_5_rbis": 0.0016861354720504318, "p_over_2_5_tb": 0.08766893830615746, "p_over_3_5_hrr": 0.02881157199595108, "p_over_3_5_tb": 0.04065456379229289}, "p50": {"p_at_least_one_hit": 0.6490503292212915, "p_at_least_one_hr": 0.03431522078719185, "p_over_0_5_bb": 0.26914865982211233, "p_over_0_5_hits": 0.6490503292212915, "p_over_0_5_hrr": 0.7791288758621879, "p_over_0_5_k": 0.5981811694234378, "p_over_0_5_rbis": 0.25798107607727017, "p_over_0_5_runs": 0.254159192019378, "p_over_0_5_tb": 0.6490503292212914, "p_over_1_5_bb": 0.031230794481268864, "p_over_1_5_hits": 0.22880944395425018, "p_over_1_5_hrr": 0.4455746280095464, "p_over_1_5_k": 0.18927420971427633, "p_over_1_5_rbis": 0.03657707465400195, "p_over_1_5_runs": 0.0354465246041632, "p_over_1_5_tb": 0.4318381697804849, "p_over_2_5_hits": 0.039939715736640125, "p_over_2_5_hrr": 0.19371183540854975, "p_over_2_5_k": 0.029739258796645518, "p_over_2_5_rbis": 0.003545752765950483, "p_over_2_5_tb": 0.19582250998316425, "p_over_3_5_hrr": 0.06692612922501451, "p_over_3_5_tb": 0.10536674514831756}, "p95": {"p_at_least_one_hit": 0.7833267928842464, "p_at_least_one_hr": 0.10946062006632895, "p_over_0_5_bb": 0.43478111385688734, "p_over_0_5_hits": 0.7833267928842464, "p_over_0_5_hrr": 0.8482025210931796, "p_over_0_5_k": 0.7512568788198548, "p_over_0_5_rbis": 0.32168775045672027, "p_over_0_5_runs": 0.30853199706886025, "p_over_0_5_tb": 0.7833267928842467, "p_over_1_5_bb": 0.09253980342651313, "p_over_1_5_hits": 0.3796973855971766, "p_over_1_5_hrr": 0.5620326961158233, "p_over_1_5_k": 0.3427505564015233, "p_over_1_5_rbis": 0.05840251129743668, "p_over_1_5_runs": 0.053422897779943135, "p_over_1_5_tb": 0.57887167232409, "p_over_2_5_hits": 0.09773468830136589, "p_over_2_5_hrr": 0.29228787124346733, "p_over_2_5_k": 0.08906014223361947, "p_over_2_5_rbis": 0.007305750767286234, "p_over_2_5_tb": 0.3283120855967794, "p_over_3_5_hrr": 0.12277950198248655, "p_over_3_5_tb": 0.20477361258042903}}, "model": {"expected_ab": 3.84, "expected_hits": 0.897, "expected_hrs": 0.038, "expected_pa": 4.3, "expected_rbis": 0.298, "expected_runs": 0.295, "expected_strikeouts": 0.838, "expected_total_bases": 1.403, "p_at_least_one_hit": 0.64, "p_at_least_one_hr": 0.038, "p_hit_per_ab": 0.233, "p_hr_per_pa": 0.0089, "p_k_per_pa": 0.195, "p_over_0_5_hits": 0.655, "p_over_0_5_k": 0.58, "p_over_0_5_rbis": 0.258, "p_over_0_5_runs": 0.255, "p_over_0_5_tb": 0.655, "p_over_1_5_hits": 0.234, "p_over_1_5_k": 0.173, "p_over_1_5_rbis": 0.037, "p_over_1_5_runs": 0.036, "p_over_1_5_tb": 0.435, "p_over_2_5_hits": 0.042, "p_over_2_5_k": 0.025, "p_over_2_5_rbis": 0.004, "p_over_2_5_tb": 0.2, "p_over_3_5_tb": 0.107}, "name": "Gabriel Moreno", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -231, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 171, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -119, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -112, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 123, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -171, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": 140, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -188, "side": "Under"}]}, "platoon_split": {"airOuts": 12, "atBats": 44, "atBatsPerHomeRun": "-.--", "avg": ".250", "babip": ".333", "baseOnBalls": 4, "catchersInterference": 0, "doubles": 6, "gamesPlayed": 16, "groundIntoDoublePlay": 0, "groundIntoTriplePlay": 0, "groundOuts": 10, "groundOutsToAirouts": "0.83", "hitByPitch": 1, "hits": 11, "homeRuns": 0, "intentionalWalks": 0, "leftOnBase": 24, "numberOfPitches": 214, "obp": ".327", "ops": ".713", "plateAppearances": 49, "rbi": 5, "sacBunts": 0, "sacFlies": 0, "slg": ".386", "strikeOuts": 11, "totalBases": 17, "triples": 0}, "position": "C", "season": {"AB": 59, "AVG": ".237", "BB%": 7.6, "H": 14, "HR": 1, "K%": 21.2, "OBP": ".303", "OPS": ".693", "PA": 66, "SLG": ".390"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.952, "bb": {"batter_bb_rate": 0.032, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.030736767418881577, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.36268646912859437, "platoon_avg": 0.34615384615384615, "recent_avg": 0.3387096774193548, "recent_pa": 130.0, "season_avg": 0.35294117647058826, "statcast_ba_diff": 0.02999999999999997, "statcast_lift": 0.015, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 4.7, "base_rate": 0.03963373493975904, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 0.993, "effective_hr_per_9": 0.8003132729282042, "final": 0.036192579780576266, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.12899999999999995, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.112, "blended_batter_k": 0.10707692307692308, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.09566171371082649, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.09230769230769231, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.24903880129185457, "2B": 0.058823529411764705, "3B": 0.01680672268907563, "HR": 0.03801741573589944, "out": 0.6373135308714056}, "rbis": {"final": 0.46812851405622485, "platoon_rbi_per_g": 0.5180722891566265, "pq_mult": 0.7, "season_rbi_per_g": 0.7333333333333333}, "runs": {"final": 0.4433333333333333, "pq_mult": 0.7, "season_r_per_g": 0.6333333333333333}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.99, "edge": 0.1707, "fair_prob": 0.52, "implied_prob": 0.5575, "kelly_frac": 0.0376, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.597, "model_p95": 0.766, "model_prob": 0.6907, "price": -126, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.97, "edge": 0.1738, "fair_prob": 0.4033, "implied_prob": 0.431, "kelly_frac": 0.0321, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.462, "model_p95": 0.714, "model_prob": 0.5772, "price": 132, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.927, "edge": 0.1443, "fair_prob": 0.3152, "implied_prob": 0.3356, "kelly_frac": 0.0233, "line": 1.5, "market": "batter_hits", "model_p5": 0.319, "model_p95": 0.618, "model_prob": 0.4595, "price": 198, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.287, "edge": 0.0249, "fair_prob": 0.617, "implied_prob": 0.6656, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.285, "model_p95": 0.424, "model_prob": 0.6419, "price": -199, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1707, "fair_prob": 0.48, "implied_prob": 0.5146, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.597, "model_p95": 0.766, "model_prob": 0.3093, "price": -106, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.003, "edge": -0.1738, "fair_prob": 0.5967, "implied_prob": 0.6377, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.462, "model_p95": 0.714, "model_prob": 0.4228, "price": -176, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.015, "edge": -0.1443, "fair_prob": 0.6848, "implied_prob": 0.729, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits", "model_p5": 0.319, "model_p95": 0.618, "model_prob": 0.5405, "price": -269, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.087, "edge": -0.0249, "fair_prob": 0.383, "implied_prob": 0.4132, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.285, "model_p95": 0.424, "model_prob": 0.3581, "price": 142, "side": "Over"}], "handedness": "S", "id": 545121, "last_15": {"atBats": 124, "avg": 0.339, "baseOnBalls": 4, "doubles": 4, "games": 2, "hits": 42, "homeRuns": 8, "hrRate": 0.0615, "kRate": 0.0923, "obp": 0.354, "plateAppearances": 130, "rbi": 28, "slg": 0.597, "strikeOuts": 12, "totalBases": 74, "triples": 2}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.7360256845997941, "p_at_least_one_hr": 0.0425696084382704, "p_over_0_5_bb": 0.039403990000000055, "p_over_0_5_hits": 0.7360256845997941, "p_over_0_5_hrr": 0.8660097676256486, "p_over_0_5_k": 0.17045211333542554, "p_over_0_5_rbis": 0.29757035644385155, "p_over_0_5_runs": 0.2846815895537652, "p_over_0_5_tb": 0.7360256845997939, "p_over_1_5_bb": 0.0005920300000000767, "p_over_1_5_hits": 0.3188262838857232, "p_over_1_5_hrr": 0.5966909582678033, "p_over_1_5_k": 0.011950683393070038, "p_over_1_5_rbis": 0.04946515794215822, "p_over_1_5_runs": 0.04503024641855413, "p_over_1_5_tb": 0.4620474361877322, "p_over_2_5_hits": 0.06960114590586963, "p_over_2_5_hrr": 0.3260271203572883, "p_over_2_5_k": 0.00038696194243126314, "p_over_2_5_rbis": 0.0056485351043692456, "p_over_2_5_tb": 0.25923096577234644, "p_over_3_5_hrr": 0.14468339783223672, "p_over_3_5_tb": 0.1420764238367714}, "p50": {"p_at_least_one_hit": 0.8350032040214661, "p_at_least_one_hr": 0.142157022933469, "p_over_0_5_bb": 0.12275963341903262, "p_over_0_5_hits": 0.8350032040214661, "p_over_0_5_hrr": 0.9068151879974665, "p_over_0_5_k": 0.3353604924024125, "p_over_0_5_rbis": 0.37399337240102026, "p_over_0_5_runs": 0.3587518321330371, "p_over_0_5_tb": 0.8350032040214662, "p_over_1_5_bb": 0.006018649459420655, "p_over_1_5_hits": 0.45945099513035714, "p_over_1_5_hrr": 0.6856717381308806, "p_over_1_5_k": 0.05022280642103749, "p_over_1_5_rbis": 0.08077542330103804, "p_over_1_5_runs": 0.07382042943376477, "p_over_1_5_tb": 0.5830265087849291, "p_over_2_5_hits": 0.14185450405625222, "p_over_2_5_hrr": 0.423266178856019, "p_over_2_5_k": 0.0035444187336234334, "p_over_2_5_rbis": 0.01210461225534698, "p_over_2_5_tb": 0.37081966933966704, "p_over_3_5_hrr": 0.21568846529530095, "p_over_3_5_tb": 0.24228741922411803}, "p95": {"p_at_least_one_hit": 0.9064079711122293, "p_at_least_one_hr": 0.2531619344899664, "p_over_0_5_bb": 0.2456861945684644, "p_over_0_5_hits": 0.9064079711122293, "p_over_0_5_hrr": 0.9380500242848955, "p_over_0_5_k": 0.48337565412067995, "p_over_0_5_rbis": 0.44993606814810083, "p_over_0_5_runs": 0.42408127801944495, "p_over_0_5_tb": 0.906407971112229, "p_over_1_5_bb": 0.026070416389241235, "p_over_1_5_hits": 0.618052458075222, "p_over_1_5_hrr": 0.7657406233339973, "p_over_1_5_k": 0.11292237499409796, "p_over_1_5_rbis": 0.12115143247338322, "p_over_1_5_runs": 0.10629581442771407, "p_over_1_5_tb": 0.7140177554239018, "p_over_2_5_hits": 0.2676431544092761, "p_over_2_5_hrr": 0.5261075216795417, "p_over_2_5_k": 0.014025488357665483, "p_over_2_5_rbis": 0.022890730038468976, "p_over_2_5_tb": 0.49581079736527073, "p_over_3_5_hrr": 0.3039334437645149, "p_over_3_5_tb": 0.3541923708013216}}, "model": {"expected_ab": 4.09, "expected_hits": 1.485, "expected_hrs": 0.156, "expected_pa": 4.3, "expected_rbis": 0.468, "expected_runs": 0.443, "expected_strikeouts": 0.411, "expected_total_bases": 2.33, "p_at_least_one_hit": 0.842, "p_at_least_one_hr": 0.147, "p_hit_per_ab": 0.363, "p_hr_per_pa": 0.0362, "p_k_per_pa": 0.096, "p_over_0_5_hits": 0.835, "p_over_0_5_k": 0.331, "p_over_0_5_rbis": 0.374, "p_over_0_5_runs": 0.358, "p_over_0_5_tb": 0.835, "p_over_1_5_hits": 0.459, "p_over_1_5_k": 0.048, "p_over_1_5_rbis": 0.081, "p_over_1_5_runs": 0.074, "p_over_1_5_tb": 0.577, "p_over_2_5_hits": 0.139, "p_over_2_5_k": 0.003, "p_over_2_5_rbis": 0.012, "p_over_2_5_tb": 0.365, "p_over_3_5_tb": 0.237}, "name": "Ildemaro Vargas", "odds": {"batter_hits": [{"book": "draftkings", "line": 1.5, "price": 198, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -269, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -126, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -106, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 142, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -199, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": 132, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -176, "side": "Under"}]}, "platoon_split": {"airOuts": 16, "atBats": 78, "atBatsPerHomeRun": "39.00", "avg": ".346", "babip": ".379", "baseOnBalls": 4, "catchersInterference": 0, "doubles": 7, "gamesPlayed": 26, "groundIntoDoublePlay": 0, "groundIntoTriplePlay": 0, "groundOuts": 26, "groundOutsToAirouts": "1.63", "hitByPitch": 0, "hits": 27, "homeRuns": 2, "intentionalWalks": 0, "leftOnBase": 22, "numberOfPitches": 282, "obp": ".378", "ops": ".916", "plateAppearances": 83, "rbi": 10, "sacBunts": 1, "sacFlies": 0, "slg": ".538", "strikeOuts": 10, "totalBases": 42, "triples": 1}, "position": "1B", "season": {"AB": 119, "AVG": ".353", "BB%": 3.2, "H": 42, "HR": 6, "K%": 11.2, "OBP": ".374", "OPS": ".971", "PA": 125, "SLG": ".597"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.921875, "bb": {"batter_bb_rate": 0.0625, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.06010751183967503, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.30712590007754514, "platoon_avg": 0.2823529411764706, "recent_avg": 0.37777777777777777, "recent_pa": 106.0, "season_avg": 0.2711864406779661, "statcast_ba_diff": 0.013000000000000012, "statcast_lift": 0.0065, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 8.7, "base_rate": 0.04949048913043479, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.041, "effective_hr_per_9": 0.8003132729282042, "final": 0.046466934215827725, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.041000000000000036, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.2109375, "blended_batter_k": 0.2053729363207547, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.18565745341930792, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.18867924528301888, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.23129736126715578, "2B": 0.025423728813559324, "3B": 0.0, "HR": 0.05040480999683007, "out": 0.6928740999224549}, "rbis": {"final": 0.4188586956521739, "platoon_rbi_per_g": 0.7945652173913043, "pq_mult": 0.7, "season_rbi_per_g": 0.5142857142857142}, "runs": {"final": 0.35999999999999993, "pq_mult": 0.7, "season_r_per_g": 0.5142857142857142}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.925, "edge": 0.1482, "fair_prob": 0.6214, "implied_prob": 0.6644, "kelly_frac": 0.0391, "line": 0.5, "market": "batter_hits", "model_p5": 0.655, "model_p95": 0.851, "model_prob": 0.7695, "price": -198, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.948, "edge": 0.124, "fair_prob": 0.469, "implied_prob": 0.5025, "kelly_frac": 0.0227, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.5, "model_p95": 0.681, "model_prob": 0.593, "price": -101, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.812, "edge": 0.0861, "fair_prob": 0.6115, "implied_prob": 0.6587, "kelly_frac": 0.0143, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.239, "model_p95": 0.361, "model_prob": 0.6977, "price": -193, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.003, "edge": -0.0861, "fair_prob": 0.3885, "implied_prob": 0.4184, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.239, "model_p95": 0.361, "model_prob": 0.3023, "price": 139, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.007, "edge": -0.124, "fair_prob": 0.531, "implied_prob": 0.569, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.5, "model_p95": 0.681, "model_prob": 0.407, "price": -132, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.013, "edge": -0.1482, "fair_prob": 0.3786, "implied_prob": 0.4049, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.655, "model_p95": 0.851, "model_prob": 0.2305, "price": 147, "side": "Under"}], "handedness": "R", "id": 571448, "last_15": {"atBats": 90, "avg": 0.378, "baseOnBalls": 14, "doubles": 4, "games": 2, "hits": 34, "homeRuns": 6, "hrRate": 0.0566, "kRate": 0.1887, "obp": 0.453, "plateAppearances": 106, "rbi": 14, "slg": 0.622, "strikeOuts": 20, "totalBases": 56, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.6546719388117603, "p_at_least_one_hr": 0.0667986605571439, "p_over_0_5_bb": 0.09349745626991945, "p_over_0_5_hits": 0.6546719388117603, "p_over_0_5_hrr": 0.8132653164845363, "p_over_0_5_k": 0.41500058310409493, "p_over_0_5_rbis": 0.27287918042947656, "p_over_0_5_runs": 0.23878918173839392, "p_over_0_5_tb": 0.6546719388117604, "p_over_1_5_bb": 0.00341302749959449, "p_over_1_5_hits": 0.22532671401155424, "p_over_1_5_hrr": 0.4999121044855719, "p_over_1_5_k": 0.07936511190467832, "p_over_1_5_rbis": 0.04117295062689297, "p_over_1_5_runs": 0.03109666813729761, "p_over_1_5_tb": 0.3216887788669379, "p_over_2_5_hits": 0.03543156661636593, "p_over_2_5_hrr": 0.23699834464851266, "p_over_2_5_k": 0.007113525076578364, "p_over_2_5_rbis": 0.004254892799145371, "p_over_2_5_tb": 0.15946981345860647, "p_over_3_5_hrr": 0.0899360893090283, "p_over_3_5_tb": 0.09035486268167067}, "p50": {"p_at_least_one_hit": 0.7569632746557303, "p_at_least_one_hr": 0.18099422687957512, "p_over_0_5_bb": 0.2244164938101756, "p_over_0_5_hits": 0.7569632746557303, "p_over_0_5_hrr": 0.8636080603900488, "p_over_0_5_k": 0.5816870889766147, "p_over_0_5_rbis": 0.3450693633172195, "p_over_0_5_runs": 0.30664280987320514, "p_over_0_5_tb": 0.7569632746557302, "p_over_1_5_bb": 0.02109723355634452, "p_over_1_5_hits": 0.3441479816893128, "p_over_1_5_hrr": 0.5918849518739591, "p_over_1_5_k": 0.17490848856829389, "p_over_1_5_rbis": 0.06788572429043349, "p_over_1_5_runs": 0.05272848249149842, "p_over_1_5_tb": 0.45560671765021726, "p_over_2_5_hits": 0.08194410484949921, "p_over_2_5_hrr": 0.32121848905807393, "p_over_2_5_k": 0.026122366908391426, "p_over_2_5_rbis": 0.009230070209812813, "p_over_2_5_tb": 0.27577944677817917, "p_over_3_5_hrr": 0.14147587167244224, "p_over_3_5_tb": 0.20466572427072624}, "p95": {"p_at_least_one_hit": 0.8505420672173345, "p_at_least_one_hr": 0.29881861333299176, "p_over_0_5_bb": 0.3789924456694753, "p_over_0_5_hits": 0.8505420672173345, "p_over_0_5_hrr": 0.9048115246640152, "p_over_0_5_k": 0.7216459161895228, "p_over_0_5_rbis": 0.4033368824868797, "p_over_0_5_runs": 0.3610831240126884, "p_over_0_5_tb": 0.8505420672173345, "p_over_1_5_bb": 0.06774754783149728, "p_over_1_5_hits": 0.49424476647056304, "p_over_1_5_hrr": 0.6809380920182068, "p_over_1_5_k": 0.31132216204023255, "p_over_1_5_rbis": 0.09521848705507474, "p_over_1_5_runs": 0.07486055564209448, "p_over_1_5_tb": 0.5711466267538868, "p_over_2_5_hits": 0.16148525274928338, "p_over_2_5_hrr": 0.41767453165697477, "p_over_2_5_k": 0.0769216431686559, "p_over_2_5_rbis": 0.015661914160838064, "p_over_2_5_tb": 0.3827788880571725, "p_over_3_5_hrr": 0.2112849915346201, "p_over_3_5_tb": 0.32390933688655454}}, "model": {"expected_ab": 3.96, "expected_hits": 1.217, "expected_hrs": 0.2, "expected_pa": 4.3, "expected_rbis": 0.419, "expected_runs": 0.36, "expected_strikeouts": 0.798, "expected_total_bases": 1.918, "p_at_least_one_hit": 0.766, "p_at_least_one_hr": 0.185, "p_hit_per_ab": 0.307, "p_hr_per_pa": 0.0465, "p_k_per_pa": 0.186, "p_over_0_5_hits": 0.77, "p_over_0_5_k": 0.56, "p_over_0_5_rbis": 0.342, "p_over_0_5_runs": 0.302, "p_over_0_5_tb": 0.77, "p_over_1_5_hits": 0.361, "p_over_1_5_k": 0.159, "p_over_1_5_rbis": 0.067, "p_over_1_5_runs": 0.051, "p_over_1_5_tb": 0.462, "p_over_2_5_hits": 0.089, "p_over_2_5_k": 0.022, "p_over_2_5_rbis": 0.009, "p_over_2_5_tb": 0.274, "p_over_3_5_tb": 0.206}, "name": "Nolan Arenado", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -198, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 147, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -101, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -132, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": 139, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -193, "side": "Under"}]}, "platoon_split": {"airOuts": 25, "atBats": 85, "atBatsPerHomeRun": "17.00", "avg": ".282", "babip": ".317", "baseOnBalls": 5, "catchersInterference": 0, "doubles": 2, "gamesPlayed": 32, "groundIntoDoublePlay": 1, "groundIntoTriplePlay": 0, "groundOuts": 16, "groundOutsToAirouts": "0.64", "hitByPitch": 1, "hits": 24, "homeRuns": 5, "intentionalWalks": 0, "leftOnBase": 29, "numberOfPitches": 361, "obp": ".326", "ops": ".808", "plateAppearances": 92, "rbi": 17, "sacBunts": 0, "sacFlies": 1, "slg": ".482", "strikeOuts": 21, "totalBases": 41, "triples": 0}, "position": "3B", "season": {"AB": 118, "AVG": ".271", "BB%": 6.2, "H": 32, "HR": 6, "K%": 21.1, "OBP": ".320", "OPS": ".769", "PA": 128, "SLG": ".449"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8493150684931506, "bb": {"batter_bb_rate": 0.1232876712328767, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.1188632694774885, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.24388322957932465, "platoon_avg": 0.17105263157894737, "recent_avg": 0.2222222222222222, "recent_pa": 128.0, "season_avg": 0.2661290322580645, "statcast_ba_diff": 0.025000000000000022, "statcast_lift": 0.0125, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 11.2, "base_rate": 0.03731403741346295, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.103, "effective_hr_per_9": 0.8003132729282042, "final": 0.03785248116984367, "park_mult": 1.0350000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.067, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.2534246575342466, "blended_batter_k": 0.25256849315068497, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.22963159333545038, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.25, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.10254079207289582, "2B": 0.06451612903225806, "3B": 0.03225806451612903, "HR": 0.04456824395804174, "out": 0.7561167704206754}, "rbis": {"final": 0.4062258064516128, "platoon_rbi_per_g": 0.6010752688172042, "pq_mult": 0.7, "season_rbi_per_g": 0.5714285714285714}, "runs": {"final": 0.43999999999999995, "pq_mult": 0.7, "season_r_per_g": 0.6285714285714286}}, "edges": [{"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.953, "edge": 0.1091, "fair_prob": 0.535, "implied_prob": 0.5781, "kelly_frac": 0.0195, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.292, "model_p95": 0.419, "model_prob": 0.644, "price": -137, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.393, "edge": 0.0377, "fair_prob": 0.4581, "implied_prob": 0.4902, "kelly_frac": 0.0014, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.338, "model_p95": 0.589, "model_prob": 0.4958, "price": 104, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.407, "edge": 0.0265, "fair_prob": 0.4554, "implied_prob": 0.4878, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.414, "model_p95": 0.615, "model_prob": 0.4819, "price": 105, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.557, "edge": 0.0042, "fair_prob": 0.3226, "implied_prob": 0.3436, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.497, "model_p95": 0.766, "model_prob": 0.3269, "price": 191, "side": "Under"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.0, "edge": -0.1091, "fair_prob": 0.465, "implied_prob": 0.5025, "kelly_frac": 0.0, "line": 0.5, "market": "batter_runs_scored", "model_p5": 0.292, "model_p95": 0.419, "model_prob": 0.356, "price": -101, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.138, "edge": -0.0042, "fair_prob": 0.6774, "implied_prob": 0.7214, "kelly_frac": 0.0, "line": 0.5, "market": "batter_hits", "model_p5": 0.497, "model_p95": 0.766, "model_prob": 0.6731, "price": -259, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.152, "edge": -0.0265, "fair_prob": 0.5446, "implied_prob": 0.5833, "kelly_frac": 0.0, "line": 1.5, "market": "batter_hits_runs_rbis", "model_p5": 0.414, "model_p95": 0.615, "model_prob": 0.5181, "price": -140, "side": "Over"}, {"all_books": ["draftkings"], "alternatives": [], "book": "draftkings", "confidence": 0.287, "edge": -0.0377, "fair_prob": 0.5419, "implied_prob": 0.5798, "kelly_frac": 0.0, "line": 1.5, "market": "batter_total_bases", "model_p5": 0.338, "model_p95": 0.589, "model_prob": 0.5042, "price": -138, "side": "Under"}], "handedness": "L", "id": 682998, "last_15": {"atBats": 108, "avg": 0.222, "baseOnBalls": 14, "doubles": 4, "games": 2, "hits": 24, "homeRuns": 4, "hrRate": 0.0312, "kRate": 0.25, "obp": 0.297, "plateAppearances": 128, "rbi": 8, "slg": 0.407, "strikeOuts": 32, "totalBases": 44, "triples": 2}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.4972744485013386, "p_at_least_one_hr": 0.05596286631884739, "p_over_0_5_bb": 0.25933118738070804, "p_over_0_5_hits": 0.4972744485013386, "p_over_0_5_hrr": 0.7578462352850603, "p_over_0_5_k": 0.5274186010198842, "p_over_0_5_rbis": 0.27295715821015476, "p_over_0_5_runs": 0.2915524940547347, "p_over_0_5_tb": 0.49727444850133856, "p_over_1_5_bb": 0.028424708748690297, "p_over_1_5_hits": 0.10915164816367118, "p_over_1_5_hrr": 0.41442803697972375, "p_over_1_5_k": 0.13783548011213287, "p_over_1_5_rbis": 0.04119780341264567, "p_over_1_5_runs": 0.04736529340529261, "p_over_1_5_tb": 0.33842227202444986, "p_over_2_5_hits": 0.008828463760214844, "p_over_2_5_hrr": 0.17091322095752337, "p_over_2_5_k": 0.017399872280520645, "p_over_2_5_rbis": 0.004258853292507192, "p_over_2_5_tb": 0.20942510859180202, "p_over_3_5_hrr": 0.05579708186928101, "p_over_3_5_tb": 0.1233213049132827}, "p50": {"p_at_least_one_hit": 0.6460778467862864, "p_at_least_one_hr": 0.14805195437765117, "p_over_0_5_bb": 0.412503419479228, "p_over_0_5_hits": 0.6460778467862864, "p_over_0_5_hrr": 0.829013547442855, "p_over_0_5_k": 0.6596888435386383, "p_over_0_5_rbis": 0.33857850283791924, "p_over_0_5_runs": 0.3563511214010652, "p_over_0_5_tb": 0.6460778467862864, "p_over_1_5_bb": 0.07833701530224935, "p_over_1_5_hits": 0.22179894148566848, "p_over_1_5_hrr": 0.5270222420193574, "p_over_1_5_k": 0.24069453931938, "p_over_1_5_rbis": 0.06517068266170989, "p_over_1_5_runs": 0.07275818895663155, "p_over_1_5_tb": 0.4660563198220125, "p_over_2_5_hits": 0.037697067897019654, "p_over_2_5_hrr": 0.26033810655865797, "p_over_2_5_k": 0.04503837305350089, "p_over_2_5_rbis": 0.008662210791473335, "p_over_2_5_tb": 0.3184791182094095, "p_over_3_5_hrr": 0.10333484889492062, "p_over_3_5_tb": 0.22047550608571845}, "p95": {"p_at_least_one_hit": 0.7663568063802703, "p_at_least_one_hr": 0.24945551906007302, "p_over_0_5_bb": 0.5572996879917197, "p_over_0_5_hits": 0.7663568063802703, "p_over_0_5_hrr": 0.8748850797681202, "p_over_0_5_k": 0.7711929271113646, "p_over_0_5_rbis": 0.4032286644443014, "p_over_0_5_runs": 0.4185963748802709, "p_over_0_5_tb": 0.7663568063802702, "p_over_1_5_bb": 0.16294126826191557, "p_over_1_5_hits": 0.35669568660207873, "p_over_1_5_hrr": 0.6148308901963276, "p_over_1_5_k": 0.3771669850159085, "p_over_1_5_rbis": 0.09516261278793958, "p_over_1_5_runs": 0.10329534254534611, "p_over_1_5_tb": 0.5886694606393765, "p_over_2_5_hits": 0.08733908167932203, "p_over_2_5_hrr": 0.34456663478816263, "p_over_2_5_k": 0.10789662428957647, "p_over_2_5_rbis": 0.015647489885155297, "p_over_2_5_tb": 0.44266175034102095, "p_over_3_5_hrr": 0.15731651364584054, "p_over_3_5_tb": 0.3387605230782853}}, "model": {"expected_ab": 3.65, "expected_hits": 0.891, "expected_hrs": 0.163, "expected_pa": 4.3, "expected_rbis": 0.406, "expected_runs": 0.44, "expected_strikeouts": 0.987, "expected_total_bases": 1.85, "p_at_least_one_hit": 0.64, "p_at_least_one_hr": 0.153, "p_hit_per_ab": 0.244, "p_hr_per_pa": 0.0379, "p_k_per_pa": 0.23, "p_over_0_5_hits": 0.673, "p_over_0_5_k": 0.648, "p_over_0_5_rbis": 0.334, "p_over_0_5_runs": 0.356, "p_over_0_5_tb": 0.673, "p_over_1_5_hits": 0.251, "p_over_1_5_k": 0.228, "p_over_1_5_rbis": 0.063, "p_over_1_5_runs": 0.073, "p_over_1_5_tb": 0.496, "p_over_2_5_hits": 0.047, "p_over_2_5_k": 0.04, "p_over_2_5_rbis": 0.008, "p_over_2_5_tb": 0.348, "p_over_3_5_tb": 0.244}, "name": "Corbin Carroll", "odds": {"batter_hits": [{"book": "draftkings", "line": 0.5, "price": -259, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": 191, "side": "Under"}], "batter_hits_runs_rbis": [{"book": "draftkings", "line": 1.5, "price": -140, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": 105, "side": "Under"}], "batter_runs_scored": [{"book": "draftkings", "line": 0.5, "price": -101, "side": "Over"}, {"book": "draftkings", "line": 0.5, "price": -137, "side": "Under"}], "batter_total_bases": [{"book": "draftkings", "line": 1.5, "price": 104, "side": "Over"}, {"book": "draftkings", "line": 1.5, "price": -138, "side": "Under"}]}, "platoon_split": {"airOuts": 20, "atBats": 76, "atBatsPerHomeRun": "19.00", "avg": ".171", "babip": ".200", "baseOnBalls": 14, "catchersInterference": 0, "doubles": 4, "gamesPlayed": 30, "groundIntoDoublePlay": 1, "groundIntoTriplePlay": 0, "groundOuts": 16, "groundOutsToAirouts": "0.80", "hitByPitch": 2, "hits": 13, "homeRuns": 4, "intentionalWalks": 0, "leftOnBase": 22, "numberOfPitches": 402, "obp": ".312", "ops": ".720", "plateAppearances": 93, "rbi": 13, "sacBunts": 0, "sacFlies": 1, "slg": ".408", "strikeOuts": 28, "totalBases": 31, "triples": 1}, "position": "RF", "season": {"AB": 124, "AVG": ".266", "BB%": 12.3, "H": 33, "HR": 5, "K%": 25.3, "OBP": ".363", "OPS": ".879", "PA": 146, "SLG": ".516"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.9433962264150944, "bb": {"batter_bb_rate": 0.04716981132075472, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.045335781530981396, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.30359848484848484, "platoon_avg": 0.2916666666666667, "recent_avg": 0.2727272727272727, "recent_pa": 100.0, "season_avg": 0.29, "statcast_ba_diff": 0.034999999999999976, "statcast_lift": 0.0175, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": 5.4, "base_rate": 0.03221201588877855, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 0.969, "effective_hr_per_9": 0.8003132729282042, "final": 0.028172253443761022, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": 0.02999999999999997, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.24528301886792453, "blended_batter_k": 0.2439622641509434, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.22157523948864444, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.24, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.24373589619809813, "2B": 0.03, "3B": 0.0, "HR": 0.029862588650386684, "out": 0.6964015151515152}, "rbis": {"final": 0.29661162988115447, "platoon_rbi_per_g": 0.5092105263157894, "pq_mult": 0.7, "season_rbi_per_g": 0.3870967741935484}, "runs": {"final": 0.4290322580645161, "pq_mult": 0.7, "season_r_per_g": 0.6129032258064516}}, "edges": [], "handedness": "R", "id": 699912, "last_15": {"atBats": 88, "avg": 0.273, "baseOnBalls": 10, "doubles": 2, "games": 2, "hits": 24, "homeRuns": 2, "hrRate": 0.02, "kRate": 0.24, "obp": 0.34, "plateAppearances": 100, "rbi": 6, "slg": 0.364, "strikeOuts": 24, "totalBases": 32, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.6320806021531049, "p_at_least_one_hr": 0.004990009995000988, "p_over_0_5_bb": 0.048679781681298495, "p_over_0_5_hits": 0.6320806021531049, "p_over_0_5_hrr": 0.7929660232313256, "p_over_0_5_k": 0.49308927159644644, "p_over_0_5_rbis": 0.19407636373151327, "p_over_0_5_runs": 0.2789903241151882, "p_over_0_5_tb": 0.6320806021531049, "p_over_1_5_bb": 0.000907179772496991, "p_over_1_5_hits": 0.2008555668744404, "p_over_1_5_hrr": 0.4669139355946037, "p_over_1_5_k": 0.11770544539092442, "p_over_1_5_rbis": 0.020185214701666565, "p_over_1_5_runs": 0.043146096763145625, "p_over_1_5_tb": 0.3016413298043897, "p_over_2_5_hits": 0.03023895589379777, "p_over_2_5_hrr": 0.2101687251911728, "p_over_2_5_k": 0.012503148346168724, "p_over_2_5_rbis": 0.0014252910872368796, "p_over_2_5_tb": 0.12419779972470692, "p_over_3_5_hrr": 0.07538841336454205, "p_over_3_5_tb": 0.04276730171874459}, "p50": {"p_at_least_one_hit": 0.7641566401681068, "p_at_least_one_hr": 0.11212369755112439, "p_over_0_5_bb": 0.16704937197511605, "p_over_0_5_hits": 0.7641566401681068, "p_over_0_5_hrr": 0.8577079516372517, "p_over_0_5_k": 0.6495151187152381, "p_over_0_5_rbis": 0.259751451882443, "p_over_0_5_runs": 0.3461686848637755, "p_over_0_5_tb": 0.764156640168107, "p_over_1_5_bb": 0.011355903139125267, "p_over_1_5_hits": 0.3554492512513109, "p_over_1_5_hrr": 0.5802564352417905, "p_over_1_5_k": 0.23089143067141749, "p_over_1_5_rbis": 0.03710743397188043, "p_over_1_5_runs": 0.06835190883263653, "p_over_1_5_tb": 0.43946091978942153, "p_over_2_5_hits": 0.08749975049055125, "p_over_2_5_hrr": 0.3097587340846053, "p_over_2_5_k": 0.04116531109543908, "p_over_2_5_rbis": 0.0036251942313124674, "p_over_2_5_tb": 0.2261298041922073, "p_over_3_5_hrr": 0.13394662035772376, "p_over_3_5_tb": 0.14384033727911746}, "p95": {"p_at_least_one_hit": 0.8644780496239091, "p_at_least_one_hr": 0.22794343955961072, "p_over_0_5_bb": 0.31606862060409724, "p_over_0_5_hits": 0.8644780496239091, "p_over_0_5_hrr": 0.9060644605604599, "p_over_0_5_k": 0.7889551221846358, "p_over_0_5_rbis": 0.32481065580280843, "p_over_0_5_runs": 0.416516023841388, "p_over_0_5_tb": 0.8644780496239092, "p_over_1_5_bb": 0.04350629386646476, "p_over_1_5_hits": 0.5131220833783383, "p_over_1_5_hrr": 0.683893149864852, "p_over_1_5_k": 0.39854055934262345, "p_over_1_5_rbis": 0.0596218592466875, "p_over_1_5_runs": 0.10217086473327242, "p_over_1_5_tb": 0.5798257564147882, "p_over_2_5_hits": 0.1769210295546323, "p_over_2_5_hrr": 0.421159302852806, "p_over_2_5_k": 0.11969949824505866, "p_over_2_5_rbis": 0.007543802607256178, "p_over_2_5_tb": 0.3469161028252508, "p_over_3_5_hrr": 0.21402462481352647, "p_over_3_5_tb": 0.2496072238551257}}, "model": {"expected_ab": 4.06, "expected_hits": 1.232, "expected_hrs": 0.121, "expected_pa": 4.3, "expected_rbis": 0.297, "expected_runs": 0.429, "expected_strikeouts": 0.953, "expected_total_bases": 1.717, "p_at_least_one_hit": 0.77, "p_at_least_one_hr": 0.116, "p_hit_per_ab": 0.304, "p_hr_per_pa": 0.0282, "p_k_per_pa": 0.222, "p_over_0_5_hits": 0.765, "p_over_0_5_k": 0.633, "p_over_0_5_rbis": 0.257, "p_over_0_5_runs": 0.349, "p_over_0_5_tb": 0.765, "p_over_1_5_hits": 0.355, "p_over_1_5_k": 0.215, "p_over_1_5_rbis": 0.036, "p_over_1_5_runs": 0.07, "p_over_1_5_tb": 0.436, "p_over_2_5_hits": 0.086, "p_over_2_5_k": 0.036, "p_over_2_5_rbis": 0.003, "p_over_2_5_tb": 0.222, "p_over_3_5_tb": 0.139}, "name": "Jose Fernandez", "odds": {}, "platoon_split": {"airOuts": 15, "atBats": 72, "atBatsPerHomeRun": "24.00", "avg": ".292", "babip": ".353", "baseOnBalls": 3, "catchersInterference": 0, "doubles": 2, "gamesPlayed": 25, "groundIntoDoublePlay": 1, "groundIntoTriplePlay": 0, "groundOuts": 18, "groundOutsToAirouts": "1.20", "hitByPitch": 1, "hits": 21, "homeRuns": 3, "intentionalWalks": 0, "leftOnBase": 19, "numberOfPitches": 289, "obp": ".329", "ops": ".773", "plateAppearances": 76, "rbi": 9, "sacBunts": 0, "sacFlies": 0, "slg": ".444", "strikeOuts": 18, "totalBases": 32, "triples": 0}, "position": "1B", "season": {"AB": 100, "AVG": ".290", "BB%": 4.7, "H": 29, "HR": 3, "K%": 24.5, "OBP": ".330", "OPS": ".740", "PA": 106, "SLG": ".410"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.9629629629629629, "bb": {"batter_bb_rate": 0.018518518518518517, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.02, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.2006224451876626, "platoon_avg": 0.2222222222222222, "recent_avg": 0.1956521739130435, "recent_pa": 94.0, "season_avg": 0.19230769230769232, "statcast_ba_diff": null, "statcast_lift": 0.0, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": null, "base_rate": 0.0, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.0, "effective_hr_per_9": 0.8003132729282042, "final": 0.005, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": null, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.3148148148148148, "blended_batter_k": 0.3105791962174941, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.2843785005918522, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.2978723404255319, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.1377378298030472, "2B": 0.057692307692307696, "3B": 0.0, "HR": 0.005192307692307693, "out": 0.7993775548123374}, "rbis": {"final": 0.27928856624319415, "platoon_rbi_per_g": 0.593103448275862, "pq_mult": 0.7, "season_rbi_per_g": 0.3157894736842105}, "runs": {"final": 0.11052631578947367, "pq_mult": 0.7, "season_r_per_g": 0.15789473684210525}}, "edges": [], "handedness": "R", "id": 543510, "last_15": {"atBats": 92, "avg": 0.196, "baseOnBalls": 0, "doubles": 4, "games": 2, "hits": 18, "homeRuns": 0, "hrRate": 0.0, "kRate": 0.2979, "obp": 0.191, "plateAppearances": 94, "rbi": 12, "slg": 0.239, "strikeOuts": 28, "totalBases": 22, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.38210043006190675, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.039403990000000055, "p_over_0_5_hits": 0.38210043006190675, "p_over_0_5_hrr": 0.5688394031410995, "p_over_0_5_k": 0.5461233004222019, "p_over_0_5_rbis": 0.17568489063243709, "p_over_0_5_runs": 0.03135727294255086, "p_over_0_5_tb": 0.38210043006190675, "p_over_1_5_bb": 0.0005920300000000767, "p_over_1_5_hits": 0.06833466839634172, "p_over_1_5_hrr": 0.20611492561522327, "p_over_1_5_k": 0.14974069825854075, "p_over_1_5_rbis": 0.016425226639755985, "p_over_1_5_runs": 0.0004968602236066211, "p_over_1_5_tb": 0.164346618674352, "p_over_2_5_hits": 0.004919952172605657, "p_over_2_5_hrr": 0.053539472808392996, "p_over_2_5_k": 0.01994894624596255, "p_over_2_5_rbis": 0.0010405513579202497, "p_over_2_5_tb": 0.051067131999035016, "p_over_3_5_hrr": 0.010753519572857417, "p_over_3_5_tb": 0.01924173648945754}, "p50": {"p_at_least_one_hit": 0.5915992608566432, "p_at_least_one_hr": 0.02187005187748614, "p_over_0_5_bb": 0.07514931596304986, "p_over_0_5_hits": 0.5915992608566432, "p_over_0_5_hrr": 0.6990164129046342, "p_over_0_5_k": 0.75079554619131, "p_over_0_5_rbis": 0.24313405987714654, "p_over_0_5_runs": 0.10836784606432426, "p_over_0_5_tb": 0.5915992608566432, "p_over_1_5_bb": 0.0022317297223014565, "p_over_1_5_hits": 0.182846918988401, "p_over_1_5_hrr": 0.33762555723539545, "p_over_1_5_k": 0.33677636004640166, "p_over_1_5_rbis": 0.032294569734689915, "p_over_1_5_runs": 0.0060961980792493264, "p_over_1_5_tb": 0.3162631615300788, "p_over_2_5_hits": 0.027757484514114306, "p_over_2_5_hrr": 0.12066463949611139, "p_over_2_5_k": 0.08046438763491026, "p_over_2_5_rbis": 0.0029278825533937125, "p_over_2_5_tb": 0.13277726809873608, "p_over_3_5_hrr": 0.03382968119018448, "p_over_3_5_tb": 0.059554949231667056}, "p95": {"p_at_least_one_hit": 0.7512200765141647, "p_at_least_one_hr": 0.08850290454116261, "p_over_0_5_bb": 0.19911012132787242, "p_over_0_5_hits": 0.7512200765141647, "p_over_0_5_hrr": 0.7971767013853378, "p_over_0_5_k": 0.8742910140566006, "p_over_0_5_rbis": 0.30402148884930535, "p_over_0_5_runs": 0.17678683538407836, "p_over_0_5_tb": 0.7512200765141647, "p_over_1_5_bb": 0.017068052332550265, "p_over_1_5_hits": 0.337305718552939, "p_over_1_5_hrr": 0.4735883281095974, "p_over_1_5_k": 0.5466776600244333, "p_over_1_5_rbis": 0.05177347743265037, "p_over_1_5_runs": 0.016638861887641854, "p_over_1_5_tb": 0.466487357366625, "p_over_2_5_hits": 0.0801268643772648, "p_over_2_5_hrr": 0.2154586259638538, "p_over_2_5_k": 0.20967206568142127, "p_over_2_5_rbis": 0.006061535006112062, "p_over_2_5_tb": 0.24095267679082588, "p_over_3_5_hrr": 0.07818351838333137, "p_over_3_5_tb": 0.1274076722339073}}, "model": {"expected_ab": 4.14, "expected_hits": 0.831, "expected_hrs": 0.021, "expected_pa": 4.3, "expected_rbis": 0.279, "expected_runs": 0.111, "expected_strikeouts": 1.223, "expected_total_bases": 1.134, "p_at_least_one_hit": 0.604, "p_at_least_one_hr": 0.021, "p_hit_per_ab": 0.201, "p_hr_per_pa": 0.005, "p_k_per_pa": 0.284, "p_over_0_5_hits": 0.592, "p_over_0_5_k": 0.738, "p_over_0_5_rbis": 0.244, "p_over_0_5_runs": 0.105, "p_over_0_5_tb": 0.592, "p_over_1_5_hits": 0.182, "p_over_1_5_k": 0.321, "p_over_1_5_rbis": 0.032, "p_over_1_5_runs": 0.006, "p_over_1_5_tb": 0.31, "p_over_2_5_hits": 0.027, "p_over_2_5_k": 0.072, "p_over_2_5_rbis": 0.003, "p_over_2_5_tb": 0.12, "p_over_3_5_tb": 0.05}, "name": "James McCann", "odds": {}, "platoon_split": {"airOuts": 3, "atBats": 27, "atBatsPerHomeRun": "-.--", "avg": ".222", "babip": ".400", "baseOnBalls": 1, "catchersInterference": 0, "doubles": 2, "gamesPlayed": 14, "groundIntoDoublePlay": 1, "groundIntoTriplePlay": 0, "groundOuts": 7, "groundOutsToAirouts": "2.33", "hitByPitch": 0, "hits": 6, "homeRuns": 0, "intentionalWalks": 0, "leftOnBase": 7, "numberOfPitches": 112, "obp": ".250", "ops": ".546", "plateAppearances": 29, "rbi": 4, "sacBunts": 1, "sacFlies": 0, "slg": ".296", "strikeOuts": 12, "totalBases": 8, "triples": 0}, "position": "C", "season": {"AB": 52, "AVG": ".192", "BB%": 1.9, "H": 10, "HR": 0, "K%": 31.5, "OBP": ".208", "OPS": ".458", "PA": 54, "SLG": ".250"}, "vs_pitcher_hand": "R"}, {"diagnostics": {"ab_per_pa": 0.8518518518518519, "bb": {"batter_bb_rate": 0.1111111111111111, "bp_bb_rate": 0.08307692307692308, "combined_bb_per_pa": 0.10707032046380424, "pitcher_bb_rate": 0.08182138667432784, "sp_bb_rate": 0.08102240896358542}, "hit": {"blended_avg": 0.15706919267638908, "platoon_avg": 0.1724137931034483, "recent_avg": 0.15151515151515152, "recent_pa": 80.0, "season_avg": 0.15217391304347827, "statcast_ba_diff": null, "statcast_lift": 0.0, "weights": {"platoon": 0.25, "recent": 0.25, "season": 0.5}}, "hr": {"barrel_pct": null, "base_rate": 0.022974537037037036, "bp_hr_per_9": 1.0712998040496409, "contact_mult": 1.0, "effective_hr_per_9": 0.8003132729282042, "final": 0.020725471963132736, "park_mult": 1.0150000000000001, "pitcher_mult": 0.6669277274401701, "slg_diff": null, "sp_hr_per_9": 0.627867298578199, "weather_mult": 1.33264}, "k": {"batter_k_rate": 0.2037037037037037, "blended_batter_k": 0.21527777777777776, "bp_k_fatigue_mult": 0.928, "bp_k_rate": 0.23414153846153846, "catcher_k_mult": 1.0, "catcher_name": null, "combined_k_per_pa": 0.194844596193755, "pitcher_k_rate": 0.20388378534319712, "recent_k_rate": 0.25, "sp_days_rest": 6, "sp_k_rate": 0.18462885154061626, "sp_k_rest_mult": 1.0, "umpire_k_mult": 1.0, "umpire_name": null}, "per_ab_outcomes": {"1B": 0.08926102993705935, "2B": 0.043478260869565216, "3B": 0.0, "HR": 0.024329901869764515, "out": 0.8429308073236109}, "rbis": {"final": 0.28809375, "platoon_rbi_per_g": 0.671875, "pq_mult": 0.7, "season_rbi_per_g": 0.3}, "runs": {"final": 0.105, "pq_mult": 0.7, "season_r_per_g": 0.15}}, "edges": [], "handedness": "R", "id": 694374, "last_15": {"atBats": 66, "avg": 0.152, "baseOnBalls": 10, "doubles": 2, "games": 2, "hits": 10, "homeRuns": 2, "hrRate": 0.025, "kRate": 0.25, "obp": 0.25, "plateAppearances": 80, "rbi": 12, "slg": 0.273, "strikeOuts": 20, "totalBases": 18, "triples": 0}, "lineup_spot": null, "mc_intervals": {"iters": 400, "p5": {"p_at_least_one_hit": 0.23258479595666748, "p_at_least_one_hr": 0.003994003998999962, "p_over_0_5_bb": 0.13792136691678425, "p_over_0_5_hits": 0.23258479595666748, "p_over_0_5_hrr": 0.4715507661356876, "p_over_0_5_k": 0.34465714080958654, "p_over_0_5_rbis": 0.18294885943641537, "p_over_0_5_runs": 0.02991677515695257, "p_over_0_5_tb": 0.23327925490706777, "p_over_1_5_bb": 0.007154023749719074, "p_over_1_5_hits": 0.02032435817286249, "p_over_1_5_hrr": 0.1345013343006981, "p_over_1_5_k": 0.052552744504245186, "p_over_1_5_rbis": 0.01786074283720329, "p_over_1_5_runs": 0.00045203734726451117, "p_over_1_5_tb": 0.11875992246603699, "p_over_2_5_hits": 0.0007209237245040523, "p_over_2_5_hrr": 0.027014832078368856, "p_over_2_5_k": 0.003728123271066197, "p_over_2_5_rbis": 0.0011824194806776545, "p_over_2_5_tb": 0.029275807794106476, "p_over_3_5_hrr": 0.004162895895811092, "p_over_3_5_tb": 0.009899334691118408}, "p50": {"p_at_least_one_hit": 0.46199194492033535, "p_at_least_one_hr": 0.08442150705025508, "p_over_0_5_bb": 0.38367317281442725, "p_over_0_5_hits": 0.46199194492033535, "p_over_0_5_hrr": 0.6209553136103494, "p_over_0_5_k": 0.5971826931795792, "p_over_0_5_rbis": 0.2523971024871685, "p_over_0_5_runs": 0.09989090782904253, "p_over_0_5_tb": 0.46199194492033535, "p_over_1_5_bb": 0.06735002494310027, "p_over_1_5_hits": 0.09840225686903503, "p_over_1_5_hrr": 0.253243618038721, "p_over_1_5_k": 0.18769159697144522, "p_over_1_5_rbis": 0.03493188389382551, "p_over_1_5_runs": 0.00516404851202612, "p_over_1_5_tb": 0.2677788476084689, "p_over_2_5_hits": 0.00918636247725979, "p_over_2_5_hrr": 0.07488484410623708, "p_over_2_5_k": 0.02932947590028312, "p_over_2_5_rbis": 0.0033033806769564578, "p_over_2_5_tb": 0.13174962883657204, "p_over_3_5_hrr": 0.017209492063117948, "p_over_3_5_tb": 0.100774679748077}, "p95": {"p_at_least_one_hit": 0.6528709417624723, "p_at_least_one_hr": 0.20685167244775027, "p_over_0_5_bb": 0.5675228218782731, "p_over_0_5_hits": 0.6528709417624723, "p_over_0_5_hrr": 0.7334061558426269, "p_over_0_5_k": 0.7754879945983317, "p_over_0_5_rbis": 0.3090254043110602, "p_over_0_5_runs": 0.16836410520694267, "p_over_0_5_tb": 0.6528709417624721, "p_over_1_5_bb": 0.16736770349189123, "p_over_1_5_hits": 0.23243027744600742, "p_over_1_5_hrr": 0.38096137285924025, "p_over_1_5_k": 0.38145620359908294, "p_over_1_5_rbis": 0.053605110739795014, "p_over_1_5_runs": 0.015043245595816934, "p_over_1_5_tb": 0.40963629445784516, "p_over_2_5_hits": 0.041467059282585095, "p_over_2_5_hrr": 0.14799026760956369, "p_over_2_5_k": 0.1075927157971952, "p_over_2_5_rbis": 0.006396771406433688, "p_over_2_5_tb": 0.26147572944412595, "p_over_3_5_hrr": 0.04532541815083435, "p_over_3_5_tb": 0.23335524393411206}}, "model": {"expected_ab": 3.66, "expected_hits": 0.575, "expected_hrs": 0.089, "expected_pa": 4.3, "expected_rbis": 0.288, "expected_runs": 0.105, "expected_strikeouts": 0.838, "expected_total_bases": 1.002, "p_at_least_one_hit": 0.465, "p_at_least_one_hr": 0.086, "p_hit_per_ab": 0.157, "p_hr_per_pa": 0.0207, "p_k_per_pa": 0.195, "p_over_0_5_hits": 0.495, "p_over_0_5_k": 0.58, "p_over_0_5_rbis": 0.25, "p_over_0_5_runs": 0.1, "p_over_0_5_tb": 0.495, "p_over_1_5_hits": 0.119, "p_over_1_5_k": 0.173, "p_over_1_5_rbis": 0.034, "p_over_1_5_runs": 0.005, "p_over_1_5_tb": 0.281, "p_over_2_5_hits": 0.014, "p_over_2_5_k": 0.025, "p_over_2_5_rbis": 0.003, "p_over_2_5_tb": 0.143, "p_over_3_5_tb": 0.108}, "name": "Tim Tawa", "odds": {}, "platoon_split": {"airOuts": 7, "atBats": 29, "atBatsPerHomeRun": "29.00", "avg": ".172", "babip": ".182", "baseOnBalls": 2, "catchersInterference": 0, "doubles": 0, "gamesPlayed": 16, "groundIntoDoublePlay": 0, "groundIntoTriplePlay": 0, "groundOuts": 11, "groundOutsToAirouts": "1.57", "hitByPitch": 0, "hits": 5, "homeRuns": 1, "intentionalWalks": 0, "leftOnBase": 11, "numberOfPitches": 137, "obp": ".219", "ops": ".495", "plateAppearances": 32, "rbi": 5, "sacBunts": 0, "sacFlies": 1, "slg": ".276", "strikeOuts": 7, "totalBases": 8, "triples": 0}, "position": "LF", "season": {"AB": 46, "AVG": ".152", "BB%": 11.1, "H": 7, "HR": 1, "K%": 20.4, "OBP": ".245", "OPS": ".506", "PA": 54, "SLG": ".261"}, "vs_pitcher_hand": "R"}, {"id": 814439, "name": "Ryan Waldschmidt", "position": "CF", "season": {"age": 23, "airOuts": 0, "atBats": 1, "atBatsPerHomeRun": "-.--", "avg": "1.000", "babip": "1.000", "baseOnBalls": 0, "catchersInterference": 0, "caughtStealing": 0, "caughtStealingPercentage": ".---", "doubles": 0, "gamesPlayed": 1, "groundIntoDoublePlay": 0, "groundOuts": 0, "groundOutsToAirouts": "-.--", "hitByPitch": 0, "hits": 1, "homeRuns": 0, "intentionalWalks": 0, "leftOnBase": 0, "numberOfPitches": 2, "obp": "1.000", "ops": "2.000", "plateAppearances": 1, "rbi": 0, "runs": 0, "sacBunts": 0, "sacFlies": 0, "slg": "1.000", "stolenBasePercentage": ".---", "stolenBases": 0, "strikeOuts": 0, "totalBases": 1, "triples": 0}, "skipped_reason": "Insufficient PA this season"}], "sport": "dbacks", "team": "Diamondbacks"};
+
+
+async function loadData(force = false) {
+  const grid = document.getElementById('players-grid');
+  grid.innerHTML = '<div class="loading-pulse">Loading hitter models…</div>';
+  try {
+    let data;
+    if (typeof STATIC_DATA !== 'undefined') {
+      data = STATIC_DATA;
+    } else {
+      const r = await fetch('/dbacks/api/props' + (force ? '?refresh=1' : ''));
+      data = await r.json();
+    }
+    renderGameStrip(data.game);
+    renderOddsMeta(data.odds_meta, data.burn);
+    renderMeta(data);
+    renderTopPicks(data.players || []);
+    renderPlayers(data.players || []);
+  } catch (e) {
+    grid.innerHTML = '<div class="error">Failed to load: ' + e.message + '</div>';
+  }
+}
+
+function renderOddsMeta(meta, burn) {
+  const bar = document.getElementById('odds-meta-bar');
+  if (!meta) { bar.hidden = true; return; }
+  bar.hidden = false;
+
+  // Burn pill (always rendered when we have any snapshots)
+  let burnHtml = '';
+  if (burn && burn.snapshots) {
+    const today = burn.daily_today;
+    const avg7  = burn.daily_7d_avg;
+    const month = burn.month_used;
+    const todayStr = today == null ? '—' : `-${today}`;
+    const avgStr   = avg7  == null ? '—' : `-${avg7}/d`;
+    const monthStr = month == null ? '—' : `${month} used`;
+    burnHtml = ` <span class="om-burn" title="today / 7d avg / month-to-date">today ${todayStr} · 7d ${avgStr} · month ${monthStr}</span>`;
+  }
+
+  if (!meta.configured) {
+    bar.className = 'odds-meta-bar status-warn';
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>Not configured — set <code>ODDS_API_KEY</code> to enable DK + FD lines and edge calculations.</span>`;
+    return;
+  }
+  if (meta.error) {
+    bar.className = 'odds-meta-bar status-err';
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>Error: ${meta.error}</span>${burnHtml}`;
+    return;
+  }
+  if (meta.fetched) {
+    bar.className = 'odds-meta-bar status-ok';
+    const credits = meta.credits_remaining != null
+      ? `<span class="om-credits">${meta.credits_remaining} credits remaining</span>` : '';
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>DraftKings + FanDuel lines loaded — best edges sorted to top.</span> ${credits}${burnHtml}`;
+  } else {
+    bar.className = 'odds-meta-bar status-warn';
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>No props available — game may not be posted yet.</span>${burnHtml}`;
+  }
+}
+
+function renderMeta(data) {
+  const ts = new Date(data.generated_at_unix * 1000);
+  document.getElementById('generated-at').textContent =
+    ts.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  document.getElementById('build-time').textContent = data.build_seconds + 's';
+}
+
+function renderGameStrip(game) {
+  const strip = document.getElementById('game-strip');
+  if (!game) {
+    strip.innerHTML = '<div class="game-none"><span>No Diamondbacks game scheduled today.</span><small>Stats below show season-only model with neutral matchup.</small></div>';
+    return;
+  }
+  const homeAway = game.is_home ? 'HOME' : 'AWAY';
+  const oppPitch = game.opponent_pitcher_name || 'TBA';
+  const venue = game.venue_name || '—';
+  const w = game.weather || {};
+  const weatherStr = w.condition || w.temp ? `${w.temp || '—'}°F · ${w.condition || ''} · wind ${w.wind || '—'}` : '';
+  strip.innerHTML = `
+    <div class="game-card">
+      <div class="game-side">
+        <div class="game-tag">${homeAway}</div>
+        <div class="game-team">vs ${game.opponent_name || '—'}</div>
+      </div>
+      <div class="game-divider"></div>
+      <div class="game-side">
+        <div class="game-tag">OPP SP</div>
+        <div class="game-team">${oppPitch}</div>
+      </div>
+      <div class="game-divider"></div>
+      <div class="game-side">
+        <div class="game-tag">VENUE</div>
+        <div class="game-team game-venue">${venue}</div>
+      </div>
+      ${weatherStr ? `
+      <div class="game-divider"></div>
+      <div class="game-side">
+        <div class="game-tag">WX</div>
+        <div class="game-team game-weather">${weatherStr}</div>
+      </div>` : ''}
+      <div class="game-divider"></div>
+      <div class="game-side">
+        <div class="game-tag">STATUS</div>
+        <div class="game-team">${game.status || '—'}</div>
+      </div>
+    </div>
+  `;
+}
+
+// MIN_CONFIDENCE injected from config.py
+const MIN_CONFIDENCE = 0.85;
+
+function renderEdgesBlock(edges) {
+  if (!edges || edges.length === 0) return '';
+  // Drop mirror "wrong side" rows AND fragile (low-confidence) edges.
+  const filtered = edges.filter(e =>
+    (e.edge || 0) > 0 && (e.confidence ?? 1) >= MIN_CONFIDENCE
+  );
+  if (filtered.length === 0) return '';
+  const top = filtered.slice(0, 6);
+  // Group by best edge per (market, line, side) across books to avoid duplicates,
+  // since DK and FD will both show similar lines. We still show both books in the row.
+  const rows = top.map(e => {
+    const stakeUsd = (e.kelly_frac || 0) * BANKROLL_USD;
+    const stakeStr = stakeUsd >= 0.5 ? `$${stakeUsd.toFixed(2)}` : '—';
+    const conf = e.confidence;
+    const confTone = conf == null ? '' : conf >= 0.85 ? 'conf-strong' : conf >= 0.65 ? 'conf-mid' : 'conf-weak';
+    const confTxt = conf == null ? '—' : (conf * 100).toFixed(0) + '%';
+    return `
+    <tr class="${edgeClass(e.edge)}">
+      <td class="ed-mkt">${marketLabel(e.market)} ${e.line != null ? e.line : ''} ${e.side[0]}</td>
+      <td class="ed-book"><span class="book-pill book-${e.book}">${bookLabel(e.book)}</span></td>
+      <td class="ed-price">${fmtAmerican(e.price)}</td>
+      <td class="ed-mp">${fmt.pct(e.model_prob)}</td>
+      <td class="ed-fp">${fmt.pct(e.fair_prob)}</td>
+      <td class="ed-edge"><b>${fmtEdge(e.edge)}</b></td>
+      <td class="ed-conf ${confTone}">${confTxt}</td>
+      <td class="ed-stake">${stakeStr}</td>
+    </tr>`;
+  }).join('');
+  return `
+    <div class="edges-block">
+      <table class="edges-table">
+        <thead><tr><th>Prop</th><th>Book</th><th>Price</th><th>Model</th><th>Fair</th><th>Edge</th><th>Conf</th><th>Stake</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function hasPositiveKelly(p) {
+  // Player has at least one edge that meets the dashboard's threshold:
+  // positive edge AND confidence ≥ MIN_CONFIDENCE.
+  return (p.edges || []).some(e =>
+    (e.edge || 0) > 0 && (e.confidence ?? 1) >= MIN_CONFIDENCE
+  );
+}
+
+function renderTopPicks(players) {
+  // Compute the same diversified top-3 the 22:55 SMS will send, render
+  // a compact "executive summary" panel above the player cards.
+  const flat = [];
+  for (const p of players) {
+    if (p.error || p.skipped_reason) continue;
+    for (const e of (p.edges || [])) {
+      if ((e.edge || 0) <= 0) continue;
+      if ((e.confidence ?? 1) < MIN_CONFIDENCE) continue;
+      const score = (e.kelly_frac || 0) * (e.confidence || 0);
+      flat.push({ player: p, edge: e, score });
+    }
+  }
+  flat.sort((a, b) => b.score - a.score);
+
+  // Diversify across players
+  const seen = new Set();
+  const top = [];
+  for (const r of flat) {
+    if (seen.has(r.player.name)) continue;
+    seen.add(r.player.name);
+    top.push(r);
+    if (top.length >= 3) break;
+  }
+
+  const box = document.getElementById('top-picks');
+  if (!top.length) { box.hidden = true; return; }
+  box.hidden = false;
+  const totalStake = top.reduce((s, r) => s + (r.edge.kelly_frac || 0) * BANKROLL_USD, 0);
+
+  const rows = top.map((r, i) => {
+    const stakeUsd = (r.edge.kelly_frac || 0) * BANKROLL_USD;
+    const conf = Math.round((r.edge.confidence || 0) * 100);
+    return `
+      <div class="tp-row">
+        <span class="tp-num">${i + 1}</span>
+        <span class="tp-player">${r.player.name}</span>
+        <span class="tp-bet">${marketLabel(r.edge.market)} ${r.edge.line != null ? r.edge.line : ''} ${r.edge.side}</span>
+        <span class="tp-book"><span class="book-pill book-${r.edge.book}">${bookLabel(r.edge.book)}</span></span>
+        <span class="tp-price">${fmtAmerican(r.edge.price)}</span>
+        <span class="tp-edge">${fmtEdge(r.edge.edge)}</span>
+        <span class="tp-conf">${conf}%</span>
+        <span class="tp-stake">$${stakeUsd.toFixed(2)}</span>
+      </div>`;
+  }).join('');
+
+  box.innerHTML = `
+    <div class="tp-head">
+      <span class="tp-title">Top Picks · tonight's SMS</span>
+      <span class="tp-sub">diversified across players · total stake $${totalStake.toFixed(2)}</span>
+    </div>
+    <div class="tp-grid">${rows}</div>
+  `;
+}
+
+function renderPlayers(players) {
+  const grid = document.getElementById('players-grid');
+  if (!players.length) {
+    grid.innerHTML = '<div class="empty">No players returned.</div>';
+    return;
+  }
+  // Stash all player data in a JS Map keyed by player ID — avoids the
+  // fragility of stuffing JSON into HTML attributes.
+  window._playerMap = new Map();
+  players.forEach(p => { if (p && p.id != null) window._playerMap.set(String(p.id), p); });
+
+  // Compact mode: only render players with at least one positive-Kelly edge.
+  // Click "View model breakdown" on any card for full diagnostics still.
+  let display = players;
+  if (COMPACT_MODE) {
+    display = players.filter(p => !p.error && !p.skipped_reason && hasPositiveKelly(p));
+  }
+
+  grid.innerHTML = '';
+  if (!display.length) {
+    grid.innerHTML = '<div class="empty">No positive-Kelly edges right now. Check back closer to first pitch — lines may not be posted yet.</div>';
+    return;
+  }
+
+  display.forEach((p, i) => {
+    const card = document.createElement('article');
+    card.className = 'player-card';
+    card.style.animationDelay = (i * 40) + 'ms';
+
+    if (p.error) {
+      card.innerHTML = `<div class="card-error"><h3>${p.name}</h3><p>${p.error}</p></div>`;
+      grid.appendChild(card);
+      return;
+    }
+    if (p.skipped_reason) {
+      card.classList.add('player-card-skip');
+      card.innerHTML = `
+        <div class="card-skip">
+          <h3>${p.name} <span class="pos">${p.position || ''}</span></h3>
+          <p>${p.skipped_reason}</p>
+        </div>`;
+      grid.appendChild(card);
+      return;
+    }
+
+    const m = p.model;
+    const s = p.season;
+    const pl = p.platoon_split || {};
+    const recent = p.last_15 || {};
+
+    if (COMPACT_MODE) {
+      card.innerHTML = `
+        <header class="card-head">
+          <div class="card-name">
+            <span class="card-num">${String(i + 1).padStart(2, '0')}</span>
+            <h3>${p.name}</h3>
+          </div>
+          <div class="card-tags">
+            <span class="tag">${p.position || ''}</span>
+            <span class="tag tag-hand">${p.handedness}HB</span>
+            <span class="tag tag-vs">vs ${p.vs_pitcher_hand}HP</span>
+          </div>
+        </header>
+        ${renderEdgesBlock(p.edges)}
+        <button class="diag-btn" data-pid="${p.id}">View model breakdown →</button>
+      `;
+      grid.appendChild(card);
+      return;
+    }
+
+    card.innerHTML = `
+      <header class="card-head">
+        <div class="card-name">
+          <span class="card-num">${String(i + 1).padStart(2, '0')}</span>
+          <h3>${p.name}</h3>
+        </div>
+        <div class="card-tags">
+          <span class="tag">${p.position || ''}</span>
+          <span class="tag tag-hand">${p.handedness}HB</span>
+          <span class="tag tag-vs">vs ${p.vs_pitcher_hand}HP</span>
+        </div>
+      </header>
+
+      <div class="hero-prob">
+        <div class="prob-block ${probClass(m.p_at_least_one_hit)}">
+          <div class="prob-value">${fmt.pct(m.p_at_least_one_hit)}</div>
+          <div class="prob-label">≥1 Hit</div>
+        </div>
+        <div class="prob-block ${probClass(m.p_over_1_5_tb)}">
+          <div class="prob-value">${fmt.pct(m.p_over_1_5_tb)}</div>
+          <div class="prob-label">TB &gt; 1.5</div>
+        </div>
+        <div class="prob-block ${probClass(m.p_at_least_one_hr)}">
+          <div class="prob-value">${fmt.pct(m.p_at_least_one_hr)}</div>
+          <div class="prob-label">HR</div>
+        </div>
+      </div>
+
+      <div class="exp-row">
+        <div class="exp"><span>xH</span><b>${fmt.num(m.expected_hits)}</b></div>
+        <div class="exp"><span>xTB</span><b>${fmt.num(m.expected_total_bases)}</b></div>
+        <div class="exp"><span>xHR</span><b>${fmt.num(m.expected_hrs, 3)}</b></div>
+        <div class="exp"><span>xPA</span><b>${fmt.num(m.expected_pa, 1)}</b></div>
+      </div>
+
+      <table class="ou-table">
+        <thead><tr><th>Line</th><th>0.5</th><th>1.5</th><th>2.5</th><th>3.5</th></tr></thead>
+        <tbody>
+          <tr><td>Hits over</td>
+            <td class="${probClass(m.p_over_0_5_hits)}">${fmt.pct(m.p_over_0_5_hits)}</td>
+            <td class="${probClass(m.p_over_1_5_hits)}">${fmt.pct(m.p_over_1_5_hits)}</td>
+            <td class="${probClass(m.p_over_2_5_hits)}">${fmt.pct(m.p_over_2_5_hits)}</td>
+            <td>—</td>
+          </tr>
+          <tr><td>Total bases over</td>
+            <td class="${probClass(m.p_over_0_5_tb)}">${fmt.pct(m.p_over_0_5_tb)}</td>
+            <td class="${probClass(m.p_over_1_5_tb)}">${fmt.pct(m.p_over_1_5_tb)}</td>
+            <td class="${probClass(m.p_over_2_5_tb)}">${fmt.pct(m.p_over_2_5_tb)}</td>
+            <td class="${probClass(m.p_over_3_5_tb)}">${fmt.pct(m.p_over_3_5_tb)}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      ${renderEdgesBlock(p.edges)}
+
+      <div class="stats-strip">
+        <div><span>AVG</span><b>${fmt.avg(s.AVG)}</b></div>
+        <div><span>OBP</span><b>${fmt.avg(s.OBP)}</b></div>
+        <div><span>SLG</span><b>${fmt.avg(s.SLG)}</b></div>
+        <div><span>HR</span><b>${fmt.int(s.HR)}</b></div>
+        <div><span>PA</span><b>${fmt.int(s.PA)}</b></div>
+        <div><span>K%</span><b>${s['K%'] != null ? s['K%'] + '%' : '—'}</b></div>
+      </div>
+
+      <div class="splits-strip">
+        <div class="split-block">
+          <span class="split-label">vs ${p.vs_pitcher_hand}HP</span>
+          <span class="split-line">${fmt.avg(pl.avg)} / ${fmt.avg(pl.obp)} / ${fmt.avg(pl.slg)} <em>(${pl.plateAppearances || 0} PA)</em></span>
+        </div>
+        <div class="split-block">
+          <span class="split-label">Last 15</span>
+          <span class="split-line">${fmt.avg(recent.avg)} / ${fmt.avg(recent.obp)} / ${fmt.avg(recent.slg)} <em>(${recent.plateAppearances || 0} PA)</em></span>
+        </div>
+      </div>
+
+      <button class="diag-btn" data-pid="${p.id}">View model breakdown →</button>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Wire up modal triggers
+  grid.querySelectorAll('.diag-btn').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const p = window._playerMap.get(btn.dataset.pid);
+      if (p) showDiagnostics(p);
+    });
+  });
+}
+
+function showDiagnostics(p) {
+  const m = p.model;
+  const d = p.diagnostics || {};
+  const hit = d.hit || {};
+  const hr = d.hr || {};
+  const k = d.k || {};
+  const out = (d.per_ab_outcomes || {});
+  const w = hit.weights || {};
+
+  const html = `
+    <h2>${p.name} <span class="modal-pos">${p.position}</span></h2>
+    <p class="modal-sub">Model breakdown — every adjustment used to compute probabilities</p>
+
+    <h3>Hit rate construction</h3>
+    <table class="modal-table">
+      <tr><td>Season AVG</td><td>${fmt.avg(hit.season_avg)}</td><td>weight ${(w.season || 0).toFixed(2)}</td></tr>
+      <tr><td>Platoon AVG (vs ${p.vs_pitcher_hand}HP)</td><td>${fmt.avg(hit.platoon_avg)}</td><td>weight ${(w.platoon || 0).toFixed(2)}</td></tr>
+      <tr><td>Last 15 AVG (${fmt.int(hit.recent_pa)} PA)</td><td>${fmt.avg(hit.recent_avg)}</td><td>weight ${(w.recent || 0).toFixed(2)}</td></tr>
+      <tr><td>Statcast luck (xBA−BA)</td><td colspan="2">${hit.statcast_ba_diff == null ? '—' : (hit.statcast_ba_diff>0?'+':'') + hit.statcast_ba_diff.toFixed(3)} → lift ${hit.statcast_lift>=0?'+':''}${(hit.statcast_lift||0).toFixed(3)}</td></tr>
+      <tr class="row-result"><td><b>Blended hit prob / AB</b></td><td colspan="2"><b>${fmt.avg(hit.blended_avg)}</b></td></tr>
+    </table>
+
+    <h3>HR rate construction</h3>
+    <table class="modal-table">
+      <tr><td>Base HR/PA (season + platoon)</td><td colspan="2">${fmt.num(hr.base_rate, 4)}</td></tr>
+      <tr><td>SP HR/9 (season ⊕ recent)</td><td colspan="2">${fmt.num(hr.sp_hr_per_9, 2)}</td></tr>
+      <tr><td>Bullpen HR/9</td><td colspan="2">${hr.bp_hr_per_9 == null ? '—' : fmt.num(hr.bp_hr_per_9, 2)}</td></tr>
+      <tr><td>Effective HR/9 (61% SP / 39% pen)</td><td colspan="2">${fmt.num(hr.effective_hr_per_9, 2)}</td></tr>
+      <tr><td>Pitcher multiplier vs league</td><td colspan="2">×${fmt.num(hr.pitcher_mult, 3)}</td></tr>
+      <tr><td>Park multiplier (handed, damped)</td><td colspan="2">×${fmt.num(hr.park_mult, 3)}</td></tr>
+      <tr><td>Weather multiplier</td><td colspan="2">×${fmt.num(hr.weather_mult, 3)}</td></tr>
+      <tr><td>Statcast contact (barrel ${hr.barrel_pct == null ? '—' : hr.barrel_pct + '%'}, slg_diff ${hr.slg_diff == null ? '—' : (hr.slg_diff>0?'+':'') + hr.slg_diff.toFixed(3)})</td><td colspan="2">×${fmt.num(hr.contact_mult, 3)}</td></tr>
+      <tr class="row-result"><td><b>Final HR/PA</b></td><td colspan="2"><b>${fmt.num(hr.final, 4)}</b></td></tr>
+    </table>
+
+    <h3>K rate construction</h3>
+    <table class="modal-table">
+      <tr><td>Batter K% (season)</td><td colspan="2">${fmt.pct(k.batter_k_rate)}</td></tr>
+      <tr><td>Batter K% (last 15)</td><td colspan="2">${k.recent_k_rate == null ? '—' : fmt.pct(k.recent_k_rate)}</td></tr>
+      <tr><td>SP K% (season ⊕ recent)</td><td colspan="2">${fmt.pct(k.sp_k_rate)}</td></tr>
+      <tr><td>Bullpen K%</td><td colspan="2">${k.bp_k_rate == null ? '—' : fmt.pct(k.bp_k_rate)}</td></tr>
+      <tr><td>Combined pitcher K% (SP/pen split)</td><td colspan="2">${fmt.pct(k.pitcher_k_rate)}</td></tr>
+      <tr><td>Plate ump (${k.umpire_name || 'TBD'})</td><td colspan="2">×${fmt.num(k.umpire_k_mult, 3)}</td></tr>
+      <tr><td>Opp catcher (${k.catcher_name || 'TBD'})</td><td colspan="2">×${fmt.num(k.catcher_k_mult, 3)}</td></tr>
+      <tr class="row-result"><td><b>Combined K/PA</b></td><td colspan="2"><b>${fmt.pct(k.combined_k_per_pa)}</b></td></tr>
+    </table>
+
+    <h3>Per-AB outcome probabilities</h3>
+    <table class="modal-table">
+      <tr><td>Out</td><td colspan="2">${fmt.pct(out.out)}</td></tr>
+      <tr><td>Single</td><td colspan="2">${fmt.pct(out['1B'])}</td></tr>
+      <tr><td>Double</td><td colspan="2">${fmt.pct(out['2B'])}</td></tr>
+      <tr><td>Triple</td><td colspan="2">${fmt.pct(out['3B'])}</td></tr>
+      <tr><td>Home run</td><td colspan="2">${fmt.pct(out.HR)}</td></tr>
+    </table>
+
+    <h3>Aggregated model output</h3>
+    <table class="modal-table">
+      <tr><td>Expected PA${p.lineup_spot ? ' (lineup spot ' + p.lineup_spot + ')' : ''}</td><td colspan="2">${fmt.num(m.expected_pa, 2)}</td></tr>
+      <tr><td>Expected AB</td><td colspan="2">${fmt.num(m.expected_ab, 2)}</td></tr>
+      <tr><td>Expected hits</td><td colspan="2">${fmt.num(m.expected_hits)}</td></tr>
+      <tr><td>Expected total bases</td><td colspan="2">${fmt.num(m.expected_total_bases)}</td></tr>
+      <tr><td>Expected HR</td><td colspan="2">${fmt.num(m.expected_hrs, 3)}</td></tr>
+      <tr><td>Expected K</td><td colspan="2">${fmt.num(m.expected_strikeouts, 2)}</td></tr>
+      <tr><td>Expected runs</td><td colspan="2">${fmt.num(m.expected_runs, 2)}</td></tr>
+      <tr><td>Expected RBI</td><td colspan="2">${fmt.num(m.expected_rbis, 2)}</td></tr>
+    </table>
+  `;
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-backdrop').hidden = false;
+}
+
+function closeModal() {
+  const backdrop = document.getElementById('modal-backdrop');
+  backdrop.hidden = true;
+  document.getElementById('modal-content').innerHTML = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeModal();
+});
+document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-backdrop') closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+
+// Make sure modal starts closed on every page load
+closeModal();
+
+loadData();
+</script>
+</body>
+</html>
