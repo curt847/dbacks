@@ -660,12 +660,16 @@ a:hover { border-bottom-color: var(--sedona); }
   border-top: 1px dotted rgba(0,0,0,0.18);
 }
 
-/* Leg-picker chips: lets the user choose which N picks to use in the parlay calc. */
+/* Leg-picker chips: lets the user choose which N picks to use in the parlay calc.
+   Keeps the .tp-parlay 2px solid top border so the panel divider sits ABOVE the
+   chip row (chips are visually grouped with the parlay panel they drive). */
 .tp-parlay-legpicker {
   grid-template-columns: auto 1fr;
   background: rgba(0,0,0,0.05);
-  border-top: 1px dotted rgba(0,0,0,0.18);
   align-items: center;
+}
+.tp-parlay-legpicker + .tp-parlay-summary {
+  border-top: 1px dotted rgba(0,0,0,0.18);
 }
 .tp-leg-chips {
   display: flex;
