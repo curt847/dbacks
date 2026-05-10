@@ -737,12 +737,20 @@ a:hover { border-bottom-color: var(--sedona); }
   .tp-stake  { grid-column: 4 / 5; grid-row: 2; }
 }
 
+/* Side abbreviation toggle — desktop shows full "Over" / "Under",
+   mobile @media block below flips to "O" / "U" to fit cramped widths. */
+.tp-bet .side-abbrev { display: none; }
+
 /* ============================================================
    Mobile phone-portrait (≤480px) — show only the bet essentials.
    Desktop ≥481px is untouched.
    Per-card: only player name + edges (Prop / Price / Edge / Conf / Stake).
    ============================================================ */
 @media (max-width: 480px) {
+  /* Side abbreviation: flip Over/Under → O/U */
+  .tp-bet .side-full { display: none; }
+  .tp-bet .side-abbrev { display: inline; }
+
   /* Container & grid */
   .content { padding: 8px 6px; }
   .players-grid { grid-template-columns: 1fr; gap: 8px; }
@@ -818,7 +826,7 @@ a:hover { border-bottom-color: var(--sedona); }
     </div>
   </div>
 </header>
-<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 07:55 PM AZ · refreshed twice daily</div>
+<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 07:59 PM AZ · refreshed twice daily</div>
 
 <section class="game-strip" id="game-strip">
   <div class="game-loading">Loading today's game…</div>
@@ -1293,7 +1301,7 @@ function renderTopPicks(players, pitchers, parlay3, parlay2) {
       <div class="tp-row">
         <span class="tp-num">${i + 1}</span>
         <span class="tp-player">${r.player.name}</span>
-        <span class="tp-bet">${marketLabel(r.edge.market)} ${r.edge.line != null ? r.edge.line : ''} ${r.edge.side}</span>
+        <span class="tp-bet">${marketLabel(r.edge.market)} ${r.edge.line != null ? r.edge.line : ''} <span class="side-full">${r.edge.side}</span><span class="side-abbrev">${(r.edge.side || '?')[0]}</span></span>
         <span class="tp-book"><span class="book-pill book-${r.edge.book}">${bookLabel(r.edge.book)}</span></span>
         <span class="tp-price">${fmtAmerican(r.edge.price)}</span>
         <span class="tp-edge">${fmtEdge(r.edge.edge)}</span>
