@@ -826,7 +826,7 @@ a:hover { border-bottom-color: var(--sedona); }
     </div>
   </div>
 </header>
-<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 09:32 PM AZ · refreshed twice daily</div>
+<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 09:34 PM AZ · refreshed twice daily</div>
 
 <section class="game-strip" id="game-strip">
   <div class="game-loading">Loading today's game…</div>
@@ -1015,7 +1015,7 @@ async function loadData(force = false) {
     renderOddsMeta(data.odds_meta, data.burn);
     renderMeta(data);
     renderTopPicks(data.players || [], data.pitchers || [], data.parlay_top3, data.parlay_top2);
-    renderPlayers([...(data.pitchers || []), ...(data.players || [])]);
+    renderPlayers([...(data.pitchers || []), ...(data.players || [])], data.game || {});
   } catch (e) {
     grid.innerHTML = '<div class="error">Failed to load: ' + e.message + '</div>';
   }
@@ -1328,7 +1328,8 @@ function renderTopPicks(players, pitchers, parlay3, parlay2) {
   });
 }
 
-function renderPlayers(players) {
+function renderPlayers(players, game = {}) {
+  const OPP_NAME = game.opponent_name || 'opp';
   const grid = document.getElementById('players-grid');
   if (!players.length) {
     grid.innerHTML = '<div class="empty">No players returned.</div>';
@@ -1383,7 +1384,7 @@ function renderPlayers(players) {
       const tags = isPitcher
         ? `<span class="tag">SP</span>
            <span class="tag tag-hand">${p.throws || 'R'}HP</span>
-           <span class="tag tag-vs">${p.side === 'team' ? TEAM_NAME : 'opp'}</span>`
+           <span class="tag tag-vs">${p.side === 'team' ? TEAM_NAME : OPP_NAME}</span>`
         : `<span class="tag">${p.position || ''}</span>
            <span class="tag tag-hand">${p.handedness}HB</span>
            <span class="tag tag-vs">vs ${p.vs_pitcher_hand}HP</span>`;
