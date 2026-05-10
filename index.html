@@ -659,6 +659,56 @@ a:hover { border-bottom-color: var(--sedona); }
   background: rgba(0,0,0,0.06);
   border-top: 1px dotted rgba(0,0,0,0.18);
 }
+
+/* Leg-picker chips: lets the user choose which N picks to use in the parlay calc. */
+.tp-parlay-legpicker {
+  grid-template-columns: auto 1fr;
+  background: rgba(0,0,0,0.05);
+  border-top: 1px dotted rgba(0,0,0,0.18);
+  align-items: center;
+}
+.tp-leg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.tp-leg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 999px;
+  background: var(--paper);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.tp-leg-chip input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0; height: 0;
+}
+.tp-leg-chip-num {
+  display: inline-block;
+  min-width: 14px;
+  text-align: center;
+  font-weight: 800;
+  color: var(--ink);
+}
+.tp-leg-chip.is-on {
+  background: var(--p-strong, #15803d);
+  border-color: var(--p-strong, #15803d);
+  color: #fff;
+}
+.tp-leg-chip.is-on .tp-leg-chip-num { color: #fff; }
+.tp-leg-chip:hover { border-color: var(--ink); }
 .tp-parlay-input-wrap { display: flex; align-items: center; }
 .tp-parlay-input {
   width: 80px;
@@ -725,6 +775,12 @@ a:hover { border-bottom-color: var(--sedona); }
   .tp-parlay-meta  { grid-column: 1 / 4; grid-row: 2; }
   .tp-parlay-edge  { grid-column: 1 / 2; grid-row: 1; display: none; }
   .tp-parlay-stake { grid-column: 3 / 4; grid-row: 1; }
+  .tp-parlay.tp-parlay-legpicker {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  .tp-parlay-legpicker .tp-parlay-label { grid-column: 1; grid-row: 1; }
+  .tp-parlay-legpicker .tp-leg-chips    { grid-column: 1; grid-row: 2; justify-content: flex-start; }
 }
 
 @media (max-width: 720px) {
@@ -889,6 +945,50 @@ function fmtAmerican(price) {
   return price > 0 ? '+' + price : String(price);
 }
 
+function americanToDecimal(p) {
+  const o = Number(p);
+  if (!Number.isFinite(o) || o === 0) return null;
+  return o > 0 ? 1 + o / 100 : 1 + 100 / -o;
+}
+function decimalToAmerican(d) {
+  if (d == null || d <= 1) return null;
+  return d >= 2 ? Math.round((d - 1) * 100) : Math.round(-100 / (d - 1));
+}
+function kellyFractionFromDecimal(modelProb, decimal) {
+  if (!Number.isFinite(decimal) || decimal <= 1) return 0;
+  const b = decimal - 1;
+  const q = 1 - modelProb;
+  const full = (b * modelProb - q) / b;
+  const KELLY_MULT = 0.125;
+  return full > 0 ? full * KELLY_MULT : 0;
+}
+// Mirrors core/parlay.py::parlay_summary — multiply per-leg decimal odds and
+// model/fair probs (independence assumption), then size by Kelly.
+function computeParlaySummary(legs, bankroll) {
+  if (!legs || legs.length < 2) return null;
+  let dec = 1, mp = 1, fp = 1;
+  for (const leg of legs) {
+    if (leg.price == null || leg.model_prob == null || leg.fair_prob == null) return null;
+    if (leg.model_prob <= 0 || leg.fair_prob <= 0) return null;
+    const d = americanToDecimal(leg.price);
+    if (d == null) return null;
+    dec *= d; mp *= leg.model_prob; fp *= leg.fair_prob;
+  }
+  const american = decimalToAmerican(dec);
+  const kelly = american != null ? kellyFractionFromDecimal(mp, dec) : 0;
+  return {
+    n_legs: legs.length,
+    decimal_odds: dec,
+    american_odds: american,
+    model_prob: mp,
+    fair_prob: fp,
+    implied_prob: 1 / dec,
+    edge: mp - fp,
+    kelly_frac: kelly,
+    stake: kelly * bankroll,
+  };
+}
+
 // Mirrors core/parlay.py::parlay_at_price for the dashboard book-price override.
 // modelProb is the independence-multiplied joint probability from the server.
 function parlayAtPrice(modelProb, americanPrice, bankroll) {
@@ -985,6 +1085,28 @@ function marketLabel(m) {
     batter_hits_runs_rbis: 'H+R+RBI',
     pitcher_strikeouts: 'Pitcher Ks',
   })[m] || m;
+}
+function marketShort(m) {
+  return ({
+    batter_hits: 'H',
+    batter_total_bases: 'TB',
+    batter_home_runs: 'HR',
+    batter_strikeouts: 'K',
+    batter_runs_scored: 'R',
+    batter_walks: 'BB',
+    batter_hits_runs_rbis: 'HRR',
+    pitcher_strikeouts: 'PK',
+  })[m] || m;
+}
+function legChipLabel(leg) {
+  const last = (leg.name || (leg.full_name || '').split(' ').slice(-1)[0] || '?');
+  const mkt = marketShort(leg.market);
+  const line = leg.line == null ? '' : leg.line;
+  const side = (leg.side || '?')[0];
+  return `${last} ${mkt}${line}${side}`;
+}
+function legId(leg) {
+  return `${leg.player_id ?? leg.full_name ?? leg.name}|${leg.market}|${leg.side}|${leg.line}`;
 }
 function edgeClass(edge) {
   if (edge == null) return '';
@@ -1164,21 +1286,28 @@ function hasPositiveKelly(p) {
 
 // Wire one parlay panel's book-price input + verdict block.
 // `panelEl` is the .tp-parlay-panel wrapper; `parlay` is { legs, summary }.
-function wireParlayPanel(panelEl, parlay) {
+// `selectablePool`, when provided, lets the user choose which legs (subset of size
+// parlay.summary.n_legs) drive the calculation; the indep summary, book-price
+// override, and singles-vs-parlay verdict all recompute live from the selection.
+function wireParlayPanel(panelEl, parlay, selectablePool) {
   const override = panelEl.querySelector('.tp-parlay-override');
   if (!override) return;
   const input = override.querySelector('.tp-parlay-input');
   const meta  = override.querySelector('.tp-parlay-out-meta');
   const edgeEl = override.querySelector('.tp-parlay-out-edge');
   const stakeEl = override.querySelector('.tp-parlay-out-stake');
-  const modelProb = Number(override.dataset.modelProb);
-  const indepDecimal = Number(override.dataset.indepDecimal);
-  const legs = (parlay && parlay.legs) || [];
   const verdictBox = panelEl.querySelector('.tp-parlay-verdict');
   const verdictHeadline = verdictBox?.querySelector('.tpv-headline');
   const verdictGrade    = verdictBox?.querySelector('.tpv-grade');
   const verdictReason   = verdictBox?.querySelector('.tpv-reason');
   const verdictCompare  = verdictBox?.querySelector('.tpv-compare');
+  // Indep summary header elements (refreshed on selection change).
+  const summaryRow = panelEl.querySelector('.tp-parlay-summary');
+  const sumNlegs = summaryRow.querySelector('.tp-parlay-nlegs');
+  const sumPrice = summaryRow.querySelector('.tp-parlay-price');
+  const sumMeta  = summaryRow.querySelector('.tp-parlay-meta');
+  const sumEdge  = summaryRow.querySelector('.tp-parlay-edge');
+  const sumStake = summaryRow.querySelector('.tp-parlay-stake');
   const HEADLINE_MAP = {
     SINGLES_ARE_THE_PLAY: 'SINGLES ARE THE PLAY',
     TAKE_THE_PARLAY:      'TAKE THE PARLAY',
@@ -1190,8 +1319,27 @@ function wireParlayPanel(panelEl, parlay) {
     DONATION:   'tpv-grade-donation',
     BOOSTED:    'tpv-grade-boosted',
   };
+
+  // Mutable state — driven by chip selection if a selectablePool is supplied.
+  let currentLegs = (parlay && parlay.legs) || [];
+  let currentSummary = (parlay && parlay.summary) || null;
+
+  const refreshSummary = () => {
+    if (!currentSummary) return;
+    const s = currentSummary;
+    const sign = s.edge >= 0 ? '+' : '';
+    sumNlegs.textContent = `${s.n_legs}-leg parlay`;
+    sumPrice.textContent = fmtAmerican(s.american_odds);
+    sumMeta.textContent  = `indep. · model ${(s.model_prob*100).toFixed(1)}% · fair ${(s.fair_prob*100).toFixed(1)}%`;
+    sumEdge.textContent  = `${sign}${(s.edge*100).toFixed(1)}% edge`;
+    sumStake.textContent = `$${s.stake.toFixed(2)}`;
+  };
+
   const hideVerdict = () => { if (verdictBox) verdictBox.hidden = true; };
   const recompute = () => {
+    if (!currentSummary) { hideVerdict(); return; }
+    const modelProb = currentSummary.model_prob;
+    const indepDecimal = currentSummary.decimal_odds;
     const raw = input.value.trim().replace(/^\+/, '');
     if (!raw) {
       meta.textContent = "enter your book's parlay price (American)";
@@ -1212,7 +1360,7 @@ function wireParlayPanel(panelEl, parlay) {
     edgeEl.style.color = r.edge > 0 ? '' : '#9a3412';
     stakeEl.textContent = r.stake > 0 ? `$${r.stake.toFixed(2)}` : '$0.00';
 
-    const v = parlayVsSingles(legs, modelProb, indepDecimal, raw, BANKROLL_USD);
+    const v = parlayVsSingles(currentLegs, modelProb, indepDecimal, raw, BANKROLL_USD);
     if (v && verdictBox) {
       verdictBox.hidden = false;
       const headlineText = HEADLINE_MAP[v.headline] || v.headline;
@@ -1233,25 +1381,94 @@ function wireParlayPanel(panelEl, parlay) {
       hideVerdict();
     }
   };
+
+  // Wire chip selector if present. FIFO swap: clicking an OFF chip turns it ON
+  // and (if we now exceed the target count) auto-toggles the oldest ON chip
+  // OFF. Clicking an ON chip while at the minimum is a no-op (re-checks itself).
+  const picker = panelEl.querySelector('.tp-parlay-legpicker');
+  if (picker && selectablePool && currentSummary) {
+    const TARGET = currentSummary.n_legs;
+    const chips = Array.from(picker.querySelectorAll('.tp-leg-chip'));
+    const cbFor = (idx) => picker.querySelector(`.tp-leg-chip input[data-leg-idx="${idx}"]`);
+    // Track selection order with oldest at front. Initial order = pool order.
+    const initialIds = new Set((parlay.legs || []).map(legId));
+    let order = [];
+    selectablePool.forEach((lg, i) => { if (initialIds.has(legId(lg))) order.push(i); });
+    chips.forEach(label => {
+      const cb = label.querySelector('input[type="checkbox"]');
+      cb.addEventListener('change', () => {
+        const idx = Number(cb.dataset.legIdx);
+        if (cb.checked) {
+          order.push(idx);
+          label.classList.add('is-on');
+          if (order.length > TARGET) {
+            const evict = order.shift();
+            const evCb = cbFor(evict);
+            if (evCb && evCb !== cb) {
+              evCb.checked = false;
+              evCb.parentElement.classList.remove('is-on');
+            }
+          }
+        } else {
+          if (order.length <= TARGET) {
+            cb.checked = true;  // reject — must keep TARGET on
+            return;
+          }
+          order = order.filter(x => x !== idx);
+          label.classList.remove('is-on');
+        }
+        // Build legs in pool order (stable) from currently checked chips.
+        const selectedIdx = chips
+          .map(l => Number(l.querySelector('input').dataset.legIdx))
+          .filter(i => cbFor(i).checked);
+        currentLegs = selectedIdx.map(i => selectablePool[i]);
+        currentSummary = computeParlaySummary(currentLegs, BANKROLL_USD);
+        refreshSummary();
+        recompute();
+      });
+    });
+  }
+
+  refreshSummary();
   input.addEventListener('input', recompute);
 }
 
 // Build the HTML for one parlay panel (indep summary + book-price input + verdict block).
-function buildParlayPanel(parlay) {
+// When `selectablePool` is provided (e.g. the top-3 legs for the 2-leg panel), a chip
+// row is rendered above the indep summary so the user can pick which N legs to use.
+function buildParlayPanel(parlay, selectablePool) {
   if (!parlay || !parlay.summary) return '';
   const s = parlay.summary;
   const edgePct = (s.edge * 100).toFixed(1);
   const sign = s.edge >= 0 ? '+' : '';
+  let pickerHtml = '';
+  if (selectablePool && selectablePool.length > s.n_legs) {
+    const initialIds = new Set((parlay.legs || []).map(legId));
+    const chips = selectablePool.map((lg, i) => {
+      const on = initialIds.has(legId(lg));
+      return `<label class="tp-leg-chip${on ? ' is-on' : ''}">
+        <input type="checkbox" data-leg-idx="${i}" ${on ? 'checked' : ''} />
+        <span class="tp-leg-chip-num">${i + 1}</span>
+        <span class="tp-leg-chip-text">${legChipLabel(lg)}</span>
+      </label>`;
+    }).join('');
+    pickerHtml = `
+      <div class="tp-parlay tp-parlay-legpicker">
+        <span class="tp-parlay-label">choose ${s.n_legs} of ${selectablePool.length}</span>
+        <span class="tp-leg-chips">${chips}</span>
+      </div>`;
+  }
   return `
     <div class="tp-parlay-panel">
-      <div class="tp-parlay">
-        <span class="tp-parlay-label">${s.n_legs}-leg parlay</span>
+      ${pickerHtml}
+      <div class="tp-parlay tp-parlay-summary">
+        <span class="tp-parlay-label tp-parlay-nlegs">${s.n_legs}-leg parlay</span>
         <span class="tp-parlay-price">${fmtAmerican(s.american_odds)}</span>
         <span class="tp-parlay-meta">indep. · model ${(s.model_prob*100).toFixed(1)}% · fair ${(s.fair_prob*100).toFixed(1)}%</span>
         <span class="tp-parlay-edge">${sign}${edgePct}% edge</span>
         <span class="tp-parlay-stake">$${s.stake.toFixed(2)}</span>
       </div>
-      <div class="tp-parlay tp-parlay-override" data-model-prob="${s.model_prob}" data-indep-decimal="${s.decimal_odds}">
+      <div class="tp-parlay tp-parlay-override">
         <span class="tp-parlay-label">at your book</span>
         <span class="tp-parlay-input-wrap">
           <input type="text" inputmode="numeric" class="tp-parlay-input" placeholder="+170" />
@@ -1316,7 +1533,8 @@ function renderTopPicks(players, pitchers, parlay3, parlay2) {
       </div>`;
   }).join('');
 
-  const parlayHtml = buildParlayPanel(parlay3) + buildParlayPanel(parlay2);
+  const top3Pool = (parlay3 && parlay3.legs && parlay3.legs.length >= 3) ? parlay3.legs : null;
+  const parlayHtml = buildParlayPanel(parlay3) + buildParlayPanel(parlay2, top3Pool);
 
   box.innerHTML = `
     <div class="tp-head">
@@ -1327,9 +1545,12 @@ function renderTopPicks(players, pitchers, parlay3, parlay2) {
     ${parlayHtml}
   `;
 
-  const parlaysToWire = [parlay3, parlay2].filter(p => p && p.summary);
+  const wired = [
+    { parlay: parlay3, pool: null },
+    { parlay: parlay2, pool: top3Pool },
+  ].filter(x => x.parlay && x.parlay.summary);
   box.querySelectorAll('.tp-parlay-panel').forEach((panelEl, i) => {
-    wireParlayPanel(panelEl, parlaysToWire[i]);
+    wireParlayPanel(panelEl, wired[i].parlay, wired[i].pool);
   });
 }
 
