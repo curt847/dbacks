@@ -737,6 +737,61 @@ a:hover { border-bottom-color: var(--sedona); }
   .tp-stake  { grid-column: 4 / 5; grid-row: 2; }
 }
 
+/* ============================================================
+   Mobile phone-portrait (≤480px) — show only the bet essentials.
+   Desktop ≥481px is untouched.
+   Per-card: only player name + edges (Prop / Price / Edge / Conf / Stake).
+   ============================================================ */
+@media (max-width: 480px) {
+  /* Container & grid */
+  .content { padding: 8px 6px; }
+  .players-grid { grid-template-columns: 1fr; gap: 8px; }
+  .player-card { padding: 10px 8px; }
+
+  /* Hide non-essential card sections */
+  .player-card .hero-prob,
+  .player-card .exp-row,
+  .player-card .ou-table,
+  .player-card .stats-strip,
+  .player-card .splits-strip,
+  .player-card .card-tags,
+  .player-card .diag-btn {
+    display: none;
+  }
+
+  /* Tighten card header */
+  .card-head { margin-bottom: 4px; padding-bottom: 4px; }
+  .card-head h3 { font-size: 15px; line-height: 1.2; }
+  .card-num { font-size: 11px; }
+
+  /* Edges table — hide Book (col 2), Model (col 4), Fair (col 5).
+     Keep: Prop / Price / Edge / Conf / Stake. */
+  .edges-table th:nth-child(2), .edges-table td:nth-child(2),
+  .edges-table th:nth-child(4), .edges-table td:nth-child(4),
+  .edges-table th:nth-child(5), .edges-table td:nth-child(5) {
+    display: none;
+  }
+  .edges-table { font-size: 11px; }
+  .edges-table th, .edges-table td { padding: 4px 3px; }
+
+  /* Header / legend / meta — strip user-education + timestamps clutter */
+  .masthead-meta { display: none; }
+  .content-header .legend { display: none; }
+  .logo-text { font-size: 13px; }
+  .subtitle { font-size: 11px; }
+
+  /* Game strip & odds-meta bar — tighten */
+  .game-strip, .odds-meta-bar { padding: 6px 8px; font-size: 11px; }
+
+  /* Top picks panel & parlay panels — tighten */
+  .top-picks { padding: 8px; }
+  .tp-parlay { padding: 8px; gap: 6px; font-size: 12px; }
+  .tp-parlay-verdict { padding: 8px; }
+  .tpv-headline { font-size: 13px; }
+  .tpv-grade { font-size: 13px; }
+  .tpv-compare { font-size: 10px; line-height: 1.35; }
+}
+
 </style>
 </head>
 <body>
@@ -763,7 +818,7 @@ a:hover { border-bottom-color: var(--sedona); }
     </div>
   </div>
 </header>
-<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 07:08 PM AZ · refreshed twice daily</div>
+<div style="background:#fef3c7;border-bottom:1px solid #f59e0b;padding:6px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:#78350f;text-align:center;">Static snapshot · last updated 2026-05-09 07:55 PM AZ · refreshed twice daily</div>
 
 <section class="game-strip" id="game-strip">
   <div class="game-loading">Loading today's game…</div>
