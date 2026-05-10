@@ -941,7 +941,7 @@ a:hover { border-bottom-color: var(--sedona); }
   <div class="content-header">
     <h2>Lines &amp; Edges</h2>
     <div class="legend">
-      <span class="legend-item">⅛-Kelly</span>
+      <span class="legend-item">¼-Kelly</span>
       <span class="legend-item">de-vigged when both sides priced</span>
       <span class="legend-item">Conf = P(edge&gt;0 | Monte Carlo)</span>
       <span class="legend-item">stake assumes $100 bankroll</span>
@@ -1003,7 +1003,7 @@ function kellyFractionFromDecimal(modelProb, decimal) {
   const b = decimal - 1;
   const q = 1 - modelProb;
   const full = (b * modelProb - q) / b;
-  const KELLY_MULT = 0.125;
+  const KELLY_MULT = 0.25;
   return full > 0 ? full * KELLY_MULT : 0;
 }
 // Mirrors core/parlay.py::parlay_summary — multiply per-leg decimal odds and
@@ -1044,7 +1044,7 @@ function parlayAtPrice(modelProb, americanPrice, bankroll) {
   const b = decimal - 1;
   const q = 1 - modelProb;
   const fullKelly = (b * modelProb - q) / b;
-  const KELLY_MULT = 0.125;  // matches config.KELLY_MULT
+  const KELLY_MULT = 0.25;  // matches config.KELLY_MULT
   const kelly = fullKelly > 0 ? fullKelly * KELLY_MULT : 0;
   return {
     decimal_odds: decimal,
@@ -1454,7 +1454,7 @@ function wireParlayPanel(panelEl, parlay, selectablePool) {
       return;
     }
     const sign = r.edge >= 0 ? '+' : '';
-    meta.textContent = `model ${(modelProb*100).toFixed(1)}% · book ${(r.implied_prob*100).toFixed(1)}% · ⅛K ${(r.kelly_frac*100).toFixed(2)}%`;
+    meta.textContent = `model ${(modelProb*100).toFixed(1)}% · book ${(r.implied_prob*100).toFixed(1)}% · ¼K ${(r.kelly_frac*100).toFixed(2)}%`;
     edgeEl.textContent = `${sign}${(r.edge*100).toFixed(1)}% edge`;
     edgeEl.style.color = r.edge > 0 ? '' : '#9a3412';
     stakeEl.textContent = r.stake > 0 ? `$${r.stake.toFixed(2)}` : '$0.00';
