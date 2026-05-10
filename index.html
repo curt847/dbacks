@@ -551,6 +551,11 @@ a:hover { border-bottom-color: var(--sedona); }
   border-bottom: 1px solid var(--rule-soft);
   white-space: nowrap;
 }
+/* Headers for the numeric columns (Price → Stake) right-align to match
+   their data cells (.ed-price, .ed-mp, .ed-fp, .ed-edge, .ed-conf, .ed-stake
+   are all text-align: right). Without this, headers sat 2-ish chars to the
+   left of the column they label. */
+.edges-table th:nth-child(n+3) { text-align: right; }
 .edges-table td {
   padding: 4px 4px; border-bottom: 1px dotted var(--rule-soft);
   font-family: var(--ff-mono); font-weight: 500;
