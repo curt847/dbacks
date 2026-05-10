@@ -866,6 +866,44 @@ a:hover { border-bottom-color: var(--sedona); }
   .tpv-compare { font-size: 10px; line-height: 1.35; }
 }
 
+/* "Show all edges" toggle — surfaces edges hidden by the conf/positive-edge filter. */
+.edge-filter-toggle {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 4px 10px;
+}
+.edge-filter-toggle[hidden] { display: none; }
+.eft-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 999px;
+  background: var(--paper);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.eft-pill:hover { border-color: var(--ink); color: var(--ink); }
+.eft-pill input[type="checkbox"] { margin: 0; cursor: pointer; }
+.eft-pill.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* Muted rows: edges revealed by SHOW_ALL_EDGES that don't pass threshold. */
+.edges-table tr.edge-muted td {
+  opacity: 0.5;
+  font-style: italic;
+}
+.edges-table tr.edge-lowconf td.ed-conf { color: #b45309; opacity: 0.7; font-style: italic; }
+
 </style>
 </head>
 <body>
@@ -911,6 +949,8 @@ a:hover { border-bottom-color: var(--sedona); }
   </div>
 
   <section id="top-picks" class="top-picks" hidden></section>
+
+  <div id="edge-filter-toggle" class="edge-filter-toggle" hidden></div>
 
   <div id="players-grid" class="players-grid">
     <div class="loading-pulse">Loading hitter models…</div>
@@ -1146,7 +1186,11 @@ async function loadData(force = false) {
     renderOddsMeta(data.odds_meta, data.burn);
     renderMeta(data);
     renderTopPicks(data.players || [], data.pitchers || [], data.parlay_top3, data.parlay_top2);
-    renderPlayers([...(data.pitchers || []), ...(data.players || [])], data.game || {});
+    const allPlayers = [...(data.pitchers || []), ...(data.players || [])];
+    window._lastPlayers = allPlayers;
+    window._lastGame = data.game || {};
+    renderEdgeFilterToggle(allPlayers);
+    renderPlayers(allPlayers, data.game || {});
   } catch (e) {
     grid.innerHTML = '<div class="error">Failed to load: ' + e.message + '</div>';
   }
@@ -1242,14 +1286,31 @@ function renderGameStrip(game) {
 // MIN_CONFIDENCE injected from config.py
 const MIN_CONFIDENCE = 0.85;
 
+// Persisted toggle: when on, the per-player edges table also shows rows that
+// fail the confidence/positive-edge filter (visually muted), and player cards
+// hidden by hasPositiveKelly reappear. Top Picks, parlay leg pool, and SMS
+// stay strict — this is a dashboard-only escape hatch.
+let SHOW_ALL_EDGES = (typeof localStorage !== 'undefined' && localStorage.getItem('showAllEdges') === '1');
+
+function edgePassesFilter(e) {
+  return (e.edge || 0) > 0 && (e.confidence ?? 1) >= MIN_CONFIDENCE;
+}
+
 function renderEdgesBlock(edges) {
   if (!edges || edges.length === 0) return '';
   // Drop mirror "wrong side" rows AND fragile (low-confidence) edges.
-  const filtered = edges.filter(e =>
-    (e.edge || 0) > 0 && (e.confidence ?? 1) >= MIN_CONFIDENCE
-  );
-  if (filtered.length === 0) return '';
-  const top = filtered.slice(0, 6);
+  const passing = edges.filter(edgePassesFilter);
+  let top;
+  if (SHOW_ALL_EDGES) {
+    // Append non-passing rows after the passing ones, sorted by Kelly × conf.
+    const rest = edges
+      .filter(e => !edgePassesFilter(e))
+      .sort((a, b) => ((b.kelly_frac || 0) * (b.confidence || 0)) - ((a.kelly_frac || 0) * (a.confidence || 0)));
+    top = [...passing.slice(0, 6), ...rest];
+  } else {
+    if (passing.length === 0) return '';
+    top = passing.slice(0, 6);
+  }
   // Group by best edge per (market, line, side) across books to avoid duplicates,
   // since DK and FD will both show similar lines. We still show both books in the row.
   const rows = top.map(e => {
@@ -1258,8 +1319,11 @@ function renderEdgesBlock(edges) {
     const conf = e.confidence;
     const confTone = conf == null ? '' : conf >= 0.85 ? 'conf-strong' : conf >= 0.65 ? 'conf-mid' : 'conf-weak';
     const confTxt = conf == null ? '—' : (conf * 100).toFixed(0) + '%';
+    const muteCls = !edgePassesFilter(e)
+      ? ((e.edge || 0) <= 0 ? ' edge-muted edge-neg' : ' edge-muted edge-lowconf')
+      : '';
     return `
-    <tr class="${edgeClass(e.edge)}">
+    <tr class="${edgeClass(e.edge)}${muteCls}">
       <td class="ed-mkt">${marketLabel(e.market)} ${e.line != null ? e.line : ''} ${e.side[0]}</td>
       <td class="ed-book"><span class="book-pill book-${e.book}">${bookLabel(e.book)}</span></td>
       <td class="ed-price">${fmtAmerican(e.price)}</td>
@@ -1283,9 +1347,40 @@ function renderEdgesBlock(edges) {
 function hasPositiveKelly(p) {
   // Player has at least one edge that meets the dashboard's threshold:
   // positive edge AND confidence ≥ MIN_CONFIDENCE.
-  return (p.edges || []).some(e =>
-    (e.edge || 0) > 0 && (e.confidence ?? 1) >= MIN_CONFIDENCE
-  );
+  // When SHOW_ALL_EDGES is on, any player with at least one edge surfaces.
+  if (SHOW_ALL_EDGES) return (p.edges || []).length > 0;
+  return (p.edges || []).some(edgePassesFilter);
+}
+
+function renderEdgeFilterToggle(players) {
+  const el = document.getElementById('edge-filter-toggle');
+  if (!el) return;
+  const real = (players || []).filter(p => !p.error && !p.skipped_reason);
+  const hiddenPlayers = real.filter(p => !(p.edges || []).some(edgePassesFilter)
+                                          && (p.edges || []).length > 0).length;
+  const hiddenEdges = real.reduce((acc, p) => {
+    const passing = (p.edges || []).filter(edgePassesFilter).length;
+    return acc + Math.max(0, (p.edges || []).length - passing);
+  }, 0);
+  if (hiddenPlayers === 0 && hiddenEdges === 0) { el.hidden = true; return; }
+  el.hidden = false;
+  const label = SHOW_ALL_EDGES
+    ? `Hide low-confidence / negative edges`
+    : `Show all edges (${hiddenEdges} hidden across ${hiddenPlayers} additional player${hiddenPlayers === 1 ? '' : 's'})`;
+  el.innerHTML = `
+    <label class="eft-pill${SHOW_ALL_EDGES ? ' is-on' : ''}">
+      <input type="checkbox" ${SHOW_ALL_EDGES ? 'checked' : ''} />
+      <span>${label}</span>
+    </label>`;
+  const cb = el.querySelector('input');
+  cb.addEventListener('change', () => {
+    SHOW_ALL_EDGES = cb.checked;
+    try { localStorage.setItem('showAllEdges', SHOW_ALL_EDGES ? '1' : '0'); } catch (_) {}
+    if (window._lastPlayers) {
+      renderPlayers(window._lastPlayers, window._lastGame || {});
+      renderEdgeFilterToggle(window._lastPlayers);
+    }
+  });
 }
 
 // Wire one parlay panel's book-price input + verdict block.
