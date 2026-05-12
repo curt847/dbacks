@@ -954,7 +954,7 @@ a:hover { border-bottom-color: var(--sedona); }
   <div class="content-header">
     <h2>Lines &amp; Edges</h2>
     <div class="legend">
-      <span class="legend-item">¼-Kelly</span>
+      <span class="legend-item">⅛-Kelly</span>
       <span class="legend-item">de-vigged when both sides priced</span>
       <span class="legend-item">Conf = P(edge&gt;0 | Monte Carlo)</span>
       <span class="legend-item">stake assumes $100 bankroll</span>
@@ -1016,7 +1016,7 @@ function kellyFractionFromDecimal(modelProb, decimal) {
   const b = decimal - 1;
   const q = 1 - modelProb;
   const full = (b * modelProb - q) / b;
-  const KELLY_MULT = 0.25;
+  const KELLY_MULT = 0.125;
   return full > 0 ? full * KELLY_MULT : 0;
 }
 // Mirrors core/parlay.py::parlay_summary — multiply per-leg decimal odds and
@@ -1057,7 +1057,7 @@ function parlayAtPrice(modelProb, americanPrice, bankroll) {
   const b = decimal - 1;
   const q = 1 - modelProb;
   const fullKelly = (b * modelProb - q) / b;
-  const KELLY_MULT = 0.25;  // matches config.KELLY_MULT
+  const KELLY_MULT = 0.125;  // matches config.KELLY_MULT
   const kelly = fullKelly > 0 ? fullKelly * KELLY_MULT : 0;
   return {
     decimal_odds: decimal,
@@ -1232,7 +1232,7 @@ function renderOddsMeta(meta, burn, generatedAtUnix) {
 
   if (!meta.configured) {
     bar.className = 'odds-meta-bar status-warn';
-    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>Not configured — set <code>ODDS_API_KEY</code> to enable DK + FD lines and edge calculations.</span>`;
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>Not configured — set <code>ODDS_API_KEY</code> to enable DraftKings + FanDuel + BetMGM + Caesars lines and edge calculations.</span>`;
     return;
   }
   if (meta.error) {
@@ -1244,7 +1244,7 @@ function renderOddsMeta(meta, burn, generatedAtUnix) {
     bar.className = 'odds-meta-bar status-ok';
     const credits = (!hideCounts && meta.credits_remaining != null)
       ? `<span class="om-credits">${meta.credits_remaining} credits remaining</span>` : '';
-    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>DraftKings + Caesars lines loaded — best edges sorted to top.</span> ${credits}${staleHtml}`;
+    bar.innerHTML = `<span class="om-tag">ODDS</span> <span>DraftKings + FanDuel + BetMGM + Caesars lines loaded — best edges sorted to top.</span> ${credits}${staleHtml}`;
   } else {
     bar.className = 'odds-meta-bar status-warn';
     bar.innerHTML = `<span class="om-tag">ODDS</span> <span>No props available — game may not be posted yet.</span>${staleHtml}`;
